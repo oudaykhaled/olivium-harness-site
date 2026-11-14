@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Olivium Harness Value</title>
+  <meta name="description" content="What Olivium Harness writes for a Claude Code repository, what was measured, what was proven at $0 in real Claude Code, and what is not proven yet. Every number has a source.">
+  <meta name="theme-color" content="#060808">
+  <meta property="og:title" content="Olivium Harness Value">
+  <meta property="og:description" content="The files Olivium Harness generates, the measured token and cost results with their limits, and what is not proven yet.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://oudaykhaled.github.io/olivium-harness-site/value.html">
+  <meta property="og:url" content="https://oudaykhaled.github.io/olivium-harness-site/value.html">
+  <meta property="og:image" content="https://oudaykhaled.github.io/olivium-harness-site/assets/olivium-harness.png">
+  <link rel="icon" type="image/png" href="assets/olivium-harness.png">
+<style>
+/* Layout: a ledger. A mono label gutter on the left names each entry; the harness files read like a terminal listing; every figure carries its source line. */
+:root {
+  color-scheme: dark;
+  --bg: #060808;
+  --panel: #0b0f0e;
+  --raise: #101514;
+  --ink: #edf1ed;
+  --muted: #9ba69d;
+  --subtle: #7a867c;
+  --line: #29332c;
+  --line-soft: #1b231e;
+  --accent: #bbff62;
+  --accent-text: #bbff62;
+  --on-accent: #060808;
+  --purple: #a894ff;
+  --bar: #6b7a6f;
+  --grid: #1f2822;
+  --code: #080c09;
+  --display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --sans: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg: #f1f3ee; --panel: #e8ebe4; --raise: #fbfcfa; --ink: #0d1210; --muted: #46514a; --subtle: #5c675f;
+    --line: #c3cbc0; --line-soft: #d9dfd5; --accent: #4f8a00; --accent-text: #3a6600; --on-accent: #ffffff;
+    --purple: #5a43d1; --bar: #76827a; --grid: #dde3da; --code: #fbfcfa;
+  }
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f1f3ee; --panel: #e8ebe4; --raise: #fbfcfa; --ink: #0d1210; --muted: #46514a; --subtle: #5c675f;
+  --line: #c3cbc0; --line-soft: #d9dfd5; --accent: #4f8a00; --accent-text: #3a6600; --on-accent: #ffffff;
+  --purple: #5a43d1; --bar: #76827a; --grid: #dde3da; --code: #fbfcfa;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+::selection { background: var(--accent); color: var(--on-accent); }
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; font-weight: 600; }
+ul, ol { padding: 0; list-style: none; }
+img { max-width: 100%; display: block; }
+code, pre, .mono { font-family: var(--mono); }
+code { font-size: .86em; color: var(--ink); background: var(--panel); border: 1px solid var(--line-soft); padding: 0 .3em; overflow-wrap: break-word; }
+a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+a:hover { color: var(--accent-text); text-decoration-color: var(--accent-text); }
+a:focus-visible, summary:focus-visible, .scroll:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 16px; top: -100px; background: var(--accent); color: var(--on-accent); padding: 10px 16px; font-family: var(--mono); font-size: 13px; z-index: 5; }
+.skip:focus { top: 12px; }
+
+/* One outer wrapper owns the side gutter. */
+.page { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 24px; }
+.page > * { max-width: 1160px; margin-inline: auto; }
+@media (min-width: 900px) {
+  .page { padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); }
+}
+
+/* Header */
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; padding-block: 20px; border-bottom: 1px solid var(--line); }
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--mono); font-size: 13px; letter-spacing: .04em; }
+.brand img { width: 30px; height: 30px; object-fit: contain; }
+.brand b { color: var(--accent-text); font-weight: 500; }
+.nav { display: flex; flex-wrap: wrap; gap: 4px 20px; font-family: var(--mono); font-size: 13px; }
+.nav a { text-decoration: none; color: var(--muted); display: inline-flex; min-height: 40px; align-items: center; }
+.nav a::before { content: '/'; color: var(--subtle); margin-right: 6px; }
+.nav a[aria-current="page"] { color: var(--ink); }
+.nav a:hover { color: var(--accent-text); }
+
+/* Hero */
+.hero { padding-block: 56px 40px; border-bottom: 1px solid var(--line); display: grid; gap: 28px; }
+.kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--subtle); }
+.hero h1 { font-size: clamp(2rem, 4.6vw, 3.5rem); line-height: 1.05; letter-spacing: -.035em; max-width: 21ch; }
+.hero .lede { font-size: 1.125rem; color: var(--muted); max-width: 64ch; }
+.hero .lede strong { color: var(--ink); font-weight: 500; }
+.cmd { font-family: var(--mono); font-size: 13px; background: var(--code); border: 1px solid var(--line); padding: 14px 16px; overflow-x: auto; white-space: pre; color: var(--ink); }
+.cmd .p { color: var(--accent-text); }
+.headline { border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; max-width: 70ch; }
+.headline p { font-size: 1.05rem; }
+.headline p + p { margin-top: 6px; color: var(--muted); font-size: .95rem; }
+.spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); border: 1px solid var(--line); }
+.spec > div { padding: 14px 16px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 0 -1px -1px 0; min-width: 0; }
+.spec dt { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--subtle); }
+.spec dd { font-family: var(--mono); font-size: 14px; margin-top: 4px; }
+.spec dd small { display: block; font-family: var(--sans); font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* Ledger sections */
+.sec { display: grid; gap: 16px 40px; padding-block: 56px; border-bottom: 1px solid var(--line); }
+@media (min-width: 900px) { .sec { grid-template-columns: 11rem minmax(0, 1fr); } }
+.sec-label { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--subtle); display: flex; flex-direction: column; gap: 6px; padding-top: 8px; }
+.sec-label b { color: var(--ink); font-weight: 500; }
+.sec-body { min-width: 0; display: grid; gap: 28px; }
+.sec h2 { font-size: clamp(1.6rem, 2.8vw, 2.25rem); line-height: 1.12; letter-spacing: -.03em; }
+.sec h3 { font-size: 1.15rem; letter-spacing: -.01em; }
+.prose { max-width: 68ch; display: grid; gap: 12px; color: var(--muted); }
+.prose strong { color: var(--ink); font-weight: 500; }
+.note { font-size: 14px; color: var(--muted); max-width: 72ch; }
+.src { font-family: var(--mono); font-size: 12px; color: var(--subtle); line-height: 1.6; max-width: 90ch; }
+.src::before { content: 'source / '; color: var(--subtle); }
+
+/* File tree */
+.tree { border: 1px solid var(--line); background: var(--code); }
+.tree li { padding: 12px 16px; border-bottom: 1px solid var(--line-soft); display: grid; gap: 4px; }
+.tree li:last-child { border-bottom: 0; }
+.t-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; font-family: var(--mono); font-size: 14px; }
+.t-path { overflow-wrap: anywhere; min-width: 0; }
+.t-path i { font-style: normal; color: var(--subtle); white-space: pre; }
+.t-size { font-family: var(--mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tree p { font-size: 14px; color: var(--muted); max-width: 78ch; }
+.tree .d1 { padding-left: 32px; }
+.tree .d2 { padding-left: 48px; }
+.tag { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--line); color: var(--muted); padding: 1px 6px; white-space: nowrap; }
+.tag.hist { border-color: var(--purple); color: var(--purple); }
+.tag.ok { border-color: var(--accent-text); color: var(--accent-text); }
+
+/* Excerpts */
+.excerpts { display: grid; gap: 20px; }
+@media (min-width: 1100px) { .excerpts { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .excerpts .wide { grid-column: 1 / -1; } }
+.file { border: 1px solid var(--line); min-width: 0; display: flex; flex-direction: column; }
+.file-bar { display: flex; flex-wrap: wrap; gap: 4px 12px; justify-content: space-between; padding: 8px 12px; background: var(--raise); border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.file-bar b { color: var(--ink); font-weight: 500; overflow-wrap: anywhere; }
+.scroll { overflow-x: auto; min-width: 0; }
+.file pre { margin: 0; padding: 14px 12px; font-size: 12.5px; line-height: 1.6; background: var(--code); color: var(--ink); white-space: pre-wrap; overflow-wrap: break-word; tab-size: 2; }
+.file pre .fm { color: var(--subtle); }
+.file pre .om { color: var(--purple); }
+.file figcaption { padding: 10px 12px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line-soft); }
+
+/* Definition rows */
+.rows { border-top: 1px solid var(--line); }
+.rows > div { display: grid; gap: 4px 24px; padding-block: 14px; border-bottom: 1px solid var(--line-soft); }
+@media (min-width: 700px) { .rows > div { grid-template-columns: 13rem minmax(0, 1fr); } }
+.rows dt { font-family: var(--mono); font-size: 13px; color: var(--ink); }
+.rows dd { color: var(--muted); font-size: 15px; max-width: 70ch; }
+.rows dd strong { color: var(--ink); font-weight: 500; }
+
+/* Tables */
+/* The caption sits outside the table so it never scrolls or clips. Below the table's own width, wide tables stack into one block per row. */
+.tbl { border: 1px solid var(--line); min-width: 0; container: tbl / inline-size; }
+.cap { padding: 10px 12px; font-family: var(--mono); font-size: 12px; color: var(--subtle); border-bottom: 1px solid var(--line); }
+.table-wrap { overflow-x: auto; min-width: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line-soft); }
+thead th { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--subtle); background: var(--raise); white-space: nowrap; }
+tbody th { font-weight: 500; color: var(--ink); }
+td { color: var(--muted); }
+td.n { font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+.t-wrap td.n { white-space: normal; }
+.t-wrap tbody th { min-width: 10rem; }
+tbody tr:last-child > * { border-bottom: 0; }
+.t-wide { min-width: 860px; }
+.t-mid { min-width: 620px; }
+@container tbl (max-width: 480px) { thead th { white-space: normal; } th, td { padding: 8px 10px; } }
+@container tbl (max-width: 859px) { .t-wide { min-width: 0; } .t-wide.stack, .t-wide.stack tbody, .t-wide.stack tr, .t-wide.stack th, .t-wide.stack td { display: block; } }
+@container tbl (max-width: 619px) { .t-mid { min-width: 0; } .t-mid.stack, .t-mid.stack tbody, .t-mid.stack tr, .t-mid.stack th, .t-mid.stack td { display: block; } }
+@container tbl (max-width: 859px) {
+  .t-wide.stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .t-wide.stack tr { padding: 12px; border-bottom: 1px solid var(--line-soft); }
+  .t-wide.stack tbody tr:last-child { border-bottom: 0; }
+  .t-wide.stack tbody th { padding: 0 0 6px; border: 0; min-width: 0; }
+  .t-wide.stack td { position: relative; padding: 3px 0 3px calc(7.5rem + 12px); border: 0; white-space: normal; }
+  .t-wide.stack td::before { position: absolute; left: 0; top: 3px; width: 7.5rem; content: attr(data-label); font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--subtle); padding-top: 2px; }
+}
+@container tbl (max-width: 619px) {
+  .t-mid.stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .t-mid.stack tr { padding: 12px; border-bottom: 1px solid var(--line-soft); }
+  .t-mid.stack tbody tr:last-child { border-bottom: 0; }
+  .t-mid.stack tbody th { padding: 0 0 6px; border: 0; }
+  .t-mid.stack td { position: relative; padding: 3px 0 3px calc(7.5rem + 12px); border: 0; }
+  .t-mid.stack td::before { position: absolute; left: 0; top: 3px; width: 7.5rem; content: attr(data-label); font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--subtle); padding-top: 2px; }
+}
+.res { font-family: var(--mono); font-size: 12px; white-space: nowrap; }
+.res.fail { color: var(--purple); }
+.res.pass { color: var(--accent-text); }
+
+/* Charts: per-row SVG tracks share one linear scale per chart. */
+.chart { border: 1px solid var(--line); padding: 18px 16px 14px; display: grid; gap: 14px; background: var(--code); min-width: 0; }
+.chart-title { font-family: var(--display); font-size: 1.05rem; font-weight: 600; }
+.chart-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.bars { display: grid; gap: 12px; }
+.bar-group { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--subtle); padding-top: 6px; }
+.bar { display: grid; grid-template-columns: minmax(0, 1fr) 7.5rem; gap: 4px 12px; align-items: center; }
+@media (min-width: 700px) { .bar { grid-template-columns: 14rem minmax(0, 1fr) 9.5rem; } }
+.bar-label { font-size: 14px; grid-column: 1 / -1; }
+@media (min-width: 700px) { .bar-label { grid-column: auto; } }
+.bar-label small { display: block; font-family: var(--mono); font-size: 12px; color: var(--subtle); }
+.bar svg { display: block; width: 100%; height: 22px; overflow: visible; }
+.bar svg .trk { fill: var(--grid); }
+.bar svg .tick { stroke: var(--line); stroke-width: 1; }
+.bar svg .mark { fill: var(--bar); }
+.bar.hl svg .mark { fill: var(--accent); }
+.bar:hover svg .mark { fill: var(--muted); }
+.bar.hl:hover svg .mark { fill: var(--accent); }
+.bar-val { font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+.bar-val small { display: block; color: var(--subtle); font-size: 12px; }
+.axis { display: grid; grid-template-columns: minmax(0, 1fr) 7.5rem; gap: 12px; font-family: var(--mono); font-size: 11px; color: var(--subtle); font-variant-numeric: tabular-nums; }
+@media (min-width: 700px) { .axis { grid-template-columns: 14rem minmax(0, 1fr) 9.5rem; } .axis::before { content: ''; } }
+.axis-scale { position: relative; height: 16px; }
+.axis-scale span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.axis-scale span:first-child { transform: none; }
+.axis-scale span:last-child { transform: translateX(-100%); }
+.axis-unit { text-align: right; }
+.chart .src { border-top: 1px solid var(--line-soft); padding-top: 10px; }
+
+/* Lists of limits */
+.limits { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.limits li { padding: 14px 0 14px 28px; border-bottom: 1px solid var(--line-soft); position: relative; color: var(--muted); max-width: 80ch; }
+.limits li::before { content: '\00d7'; position: absolute; left: 4px; top: 12px; font-family: var(--mono); color: var(--purple); }
+.limits li strong { color: var(--ink); font-weight: 500; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips code { font-size: 13px; }
+.cols { display: grid; gap: 28px; }
+@media (min-width: 1000px) { .cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.cols > * { min-width: 0; display: grid; gap: 14px; align-content: start; }
+.links { display: grid; gap: 8px; font-family: var(--mono); font-size: 13px; }
+.links a { overflow-wrap: anywhere; }
+
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; padding-block: 28px; font-family: var(--mono); font-size: 12px; color: var(--subtle); }
+.foot nav { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.foot a { color: var(--muted); }
+
+@media (prefers-reduced-motion: no-preference) {
+  a, .bar svg .mark { transition: color .15s ease, fill .15s ease, text-decoration-color .15s ease; }
+}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="page">
+
+<header class="top">
+  <a class="brand" href="index.html" aria-label="Olivium Harness home"><img src="assets/olivium-harness.png" alt="" width="30" height="30"><span>OLIVIUM <b>HARNESS</b></span></a>
+  <nav class="nav" aria-label="Main navigation">
+    <a href="index.html">Overview</a>
+    <a href="benchmark.html">Benchmark</a>
+    <a href="value.html" aria-current="page">Value</a>
+    <a href="https://github.com/oudaykhaled/olivium-harness">Repository</a>
+  </nav>
+</header>
+
+<main id="main">
+
+<section class="hero" aria-labelledby="hero-h">
+  <p class="kicker">What Olivium Harness gives you / measured 2026-11-10 to 2026-11-14</p>
+  <h1 id="hero-h">It reads a git repository and writes a harness for Claude Code.</h1>
+  <p class="lede">The harness is <strong>CLAUDE.md, a settings file, three hooks, and skills and subagents built from the repository's git history.</strong> The generator calls no model. The same commit gives the same files.</p>
+  <div class="cmd" role="region" aria-label="Command" tabindex="0"><span class="p">$</span> bin/harnessforge generate /absolute/path/to/your/repo \
+    --runtime claude_code --export /absolute/path/to/new-directory</div>
+  <div class="headline">
+    <p>Latest measurement, 2026-11-14: on the 8 benchmark tasks, 24 paid runs per setup, the default export used a median of 53,197 fewer tokens per run than no harness (95% interval 16,825 to 72,241 fewer). Cost per run and tasks solved showed no clear difference.</p>
+    <p>Limits: the generator was tuned on these 8 tasks, so this is not a held-out result. Generated skills were called in 6 of 24 runs and subagents never; the same export without them used the fewest tokens. In an earlier test the <code>lean</code> settings alone, without generated files, gave 0.37x the tokens of no harness; you could set them by hand. There is no held-out result yet.</p>
+  </div>
+  <dl class="spec">
+    <div><dt>Setup cost</dt><dd>$0<small>No model call. Claude Code's <code>/init</code> cost $0.4557 (2026-11-10) and $0.4991 (2026-11-14) for the same 8 tasks.</small></dd></div>
+    <div><dt>Repeatable</dt><dd>byte-identical tree<small>Same commit, same digest and files, skills and agents included (end-to-end checks C14, C26).</small></dd></div>
+    <div><dt>Runtime</dt><dd>Claude Code, solo mode<small><code>codex</code> and <code>opencode</code> return <code>unsupported_runtime</code> (exit 3). No team mode in this build.</small></dd></div>
+    <div><dt>Paid spend to date</dt><dd>$33.00 of $60<small>All benchmarks and tests, as metered. The re-run of 2026-11-14 cost $5.51.</small></dd></div>
+  </dl>
+</section>
+
+<section class="sec" id="files" aria-labelledby="files-h">
+  <div class="sec-label"><b>Output</b><span>golden export</span><span>sqlite-utils, axios</span></div>
+  <div class="sec-body">
+    <h2 id="files-h">What you get</h2>
+    <div class="prose">
+      <p><code>generate</code> writes into a new directory and refuses one that already exists. Exit status is 0 on success, 1 on failure, 2 on a usage error and 3 for an unsupported runtime or mode.</p>
+      <p>Sizes are bytes on disk in the golden Python export from the test suite. That fixture has too little history for skills or subagents, so their figures come from real exports of public repositories.</p>
+    </div>
+
+    <ul class="tree" aria-label="Generated files">
+      <li><div class="t-row"><span class="t-path"><i>./</i></span><span class="tag">export root</span></div></li>
+      <li class="d1"><div class="t-row"><span class="t-path"><i>├─ </i>CLAUDE.md</span><span class="t-size">285 B</span></div>
+        <p>At most 600 bytes. Only lines the agent cannot guess. Each line left out is listed with a reason in <code>.olivium/guidance-provenance.json</code>. On the 8 benchmark tasks: 72 to 404 bytes, 4 to 15 lines withheld.</p></li>
+      <li class="d1"><div class="t-row"><span class="t-path"><i>├─ </i>.claude/settings.json</span><span class="t-size">4,534 B</span></div>
+        <p>48 allow rules including bare <code>Bash</code>, 118 deny, 0 ask. <code>defaultMode: default</code>, <code>includeGitInstructions: false</code>, <code>disableSkillShellExecution: true</code>.</p></li>
+      <li class="d2"><div class="t-row"><span class="t-path"><i>├─ </i>.claude/hooks/olivium-guard.sh</span><span class="t-size">38,854 B</span></div>
+        <p>PreToolUse. Only refuses, never approves. Runs only while its SHA-256 equals the generated value. <code>PATH=/usr/bin:/bin</code>, 10 s timeout.</p></li>
+      <li class="d2"><div class="t-row"><span class="t-path"><i>├─ </i>.claude/hooks/olivium-before-stop.sh</span><span class="t-size">11,285 B</span></div>
+        <p>Stop. Formats and lints changed files and runs only changed test files, at most 3, 60 s per step. Silent unless a check fails; then it blocks the stop once with at most 1,200 characters.</p></li>
+      <li class="d2"><div class="t-row"><span class="t-path"><i>├─ </i>.claude/hooks/olivium-env-check.sh</span><span class="t-size">1,566 B</span></div>
+        <p>SessionStart. Prints one line per listed tool that is not installed, nothing when all resolve. When it fires it adds 44 tokens to the first request.</p></li>
+      <li class="d2"><div class="t-row"><span class="t-path"><i>├─ </i>.claude/skills/olivium-area-&lt;name&gt;/SKILL.md</span><span class="tag hist">from history, 0 to 3</span></div>
+        <p>Files that change together, their tests and past fixes. sqlite-utils: 188 B listed on every request, 1,165 B loaded when the skill is called.</p></li>
+      <li class="d2"><div class="t-row"><span class="t-path"><i>├─ </i>.claude/agents/olivium-locator.md</span><span class="tag hist">from history</span></div>
+        <p>Read-only search with <code>Read, Grep, Glob</code>. Replies with at most 15 <code>path:start-end - reason</code> lines, no file contents.</p></li>
+      <li class="d2"><div class="t-row"><span class="t-path"><i>└─ </i>.claude/agents/olivium-test-runner.md</span><span class="tag hist">from history</span></div>
+        <p>Runs only the detected test command with <code>Bash, Read</code>. Replies <code>PASS &lt;count&gt;</code> or the failing tests with their first error lines, 60 lines at most.</p></li>
+      <li class="d1"><div class="t-row"><span class="t-path"><i>└─ </i>.olivium/</span><span class="tag">records</span></div>
+        <p>What was generated and from what: spec, provenance, capability report, manifest. <code>native-provenance.json</code> lists each skill's and subagent's evidence commits, sizes, sha256, cost estimate, and dropped items with reasons.</p></li>
+    </ul>
+
+    <h3>Real generated files</h3>
+    <p class="note">Verbatim, generated 2026-11-13 with the default <code>--native all</code>. Only paths, commands, commit hashes and counts come from the repository. The rest is a fixed English template. No commit message is copied. Lines in purple brackets are omitted here and are not part of the file.</p>
+    <div class="excerpts">
+      <figure class="file wide">
+        <div class="file-bar"><b>.claude/skills/olivium-area-sqlite-utils/SKILL.md</b><span>simonw/sqlite-utils / 25 lines, 2 omitted</span></div>
+        <div class="scroll" role="region" aria-label="SKILL.md excerpt" tabindex="0"><pre><span class="fm">---
+name: "olivium-area-sqlite-utils"
+description: "Before changing sqlite_utils/cli.py, sqlite_utils/create_table_parser.py, sqlite_utils/db.py (+1 more): files that change together, their tests and past fixes."
+---</span>
+
+# Area sqlite-utils
+
+These files changed together in 24 commits (history up to 9c66bafa52):
+- `sqlite_utils/cli.py`
+- `sqlite_utils/create_table_parser.py`
+- `sqlite_utils/db.py`
+- `sqlite_utils/utils.py`
+Tests that history pairs with them:
+- `tests/test_cli.py` (20 joint changes); run: `pytest tests/test_cli.py`
+- `tests/test_create.py` (15 joint changes); run: `pytest tests/test_create.py`
+- `tests/test_transform.py` (15 joint changes); run: `pytest tests/test_transform.py`
+- `tests/test_fts.py` (8 joint changes); run: `pytest tests/test_fts.py`
+Past fixes touching them (commit: what it changed; `git show &lt;commit&gt;` for the diff):
+- 6bc1d33d58: `sqlite_utils/utils.py`, `tests/test_rows_from_file.py`
+- f6d73112c8: `sqlite_utils/db.py`
+- 88b48fa167: `sqlite_utils/db.py`, `tests/test_create.py`, `tests/test_introspect.py`
+<span class="om">[2 more past-fix lines omitted]</span>
+Reverted or fixed again before: `sqlite_utils/db.py` (reverts: 0, follow-up fixes within 7 days: 5 of its 15 fixes)
+When you change one of them, check the others and run the paired tests.</pre></div>
+        <figcaption>188 B listed on every request, 1,165 B loaded when the skill is called.</figcaption>
+      </figure>
+      <figure class="file">
+        <div class="file-bar"><b>.claude/agents/olivium-test-runner.md</b><span>simonw/sqlite-utils / 33 lines, 15 omitted</span></div>
+        <div class="scroll" role="region" aria-label="Test-runner subagent excerpt" tabindex="0"><pre><span class="fm">---
+name: "olivium-test-runner"
+description: "Runs this project's tests and replies with failures only (test ids and first error lines). Use it to run tests so their output stays out of your context."
+tools: Bash, Read
+maxTurns: 8
+---</span>
+
+You run this project's tests and report the result. Run only these commands, adding test files or test ids:
+- `pytest` (whole suite)
+- `pytest &lt;file&gt;` (one file)
+Prefer the narrowest run: the tests paired with the changed files below; the whole suite only when asked.
+Tests paired with sources (history):
+- `sqlite_utils/cli.py` -&gt; `tests/test_cli.py`
+- `sqlite_utils/db.py` -&gt; `tests/test_cli.py`
+- `sqlite_utils/db.py` -&gt; `tests/test_create.py`
+- `sqlite_utils/db.py` -&gt; `tests/test_transform.py`
+<span class="om">[15 more pair lines omitted]</span>
+Reply with `PASS &lt;count&gt;` or, for each failing test, its id and the first 15 lines of its error; 60 lines in all at most.
+Do not edit files. Do not run anything else.</pre></div>
+        <figcaption>The guard refuses any Bash call from this subagent that is not <code>pytest</code> with test files, ids or allowed flags.</figcaption>
+      </figure>
+      <figure class="file">
+        <div class="file-bar"><b>.claude/agents/olivium-locator.md</b><span>axios/axios / 32 lines, 12 omitted</span></div>
+        <div class="scroll" role="region" aria-label="Locator subagent excerpt" tabindex="0"><pre><span class="fm">---
+name: "olivium-locator"
+description: "Read-only code search: give it a task or symptom; it replies with file paths and line ranges only, no file contents. Use it instead of reading many files yourself."
+tools: Read, Grep, Glob
+maxTurns: 12
+---</span>
+
+You find code in this repository and report locations only.
+Reply with at most 15 lines, each `path:start-end - reason` (reason: 8 words or fewer), most relevant first.
+Never paste code or file contents. Do not edit anything.
+Layout:
+- `lib/`: library source
+- `scripts/`: project scripts
+Files that change together (history):
+- `index.d.ts`, `lib/core/Axios.js`, `lib/core/dispatchRequest.js`
+- `lib/adapters/http.js`, `lib/core/mergeConfig.js`, `lib/helpers/resolveConfig.js`
+Tests paired with sources:
+- `index.d.ts` -&gt; `tests/unit/adapters/http.test.js`
+- `lib/core/AxiosHeaders.js` -&gt; `tests/unit/axiosHeaders.test.js`
+- `index.d.ts` -&gt; `tests/module/cjs/tests/helpers/cjs-added-types.ts`
+<span class="om">[12 more pair lines omitted]</span></pre></div>
+        <figcaption>axios got no test runner: its test command is an npm script that cannot run one test file (<code>runner_command_unsuitable</code>).</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="history" aria-labelledby="history-h">
+  <div class="sec-label"><b>History</b><span>git log, no model</span></div>
+  <div class="sec-body">
+    <h2 id="history-h">How it learns from history</h2>
+    <dl class="rows">
+      <div><dt>Co-change groups</dt><dd>At least 2 source files changed together in at least 4 focused commits of 2 to 25 files. Formatting, lint, version-support drops, migrations, bumps, and style, chore, ci, build and docs commits do not count. Renames are followed.</dd></div>
+      <div><dt>History-paired tests</dt><dd>Test files that changed with those sources, each with the command that runs it.</dd></div>
+      <div><dt>Fix commits</dt><dd>Up to 5 per area, with the files each changed. Only the hash is written, so a model needs <code>git show</code> to learn what a fix did.</dd></div>
+      <div><dt>Reverts and follow-ups</dt><dd>Files reverted or fixed again within 7 days.</dd></div>
+      <div><dt>The repository's own rules</dt><dd>Up to 2 rules from its own instruction files that name one of the area's files, each at most 240 bytes.</dd></div>
+    </dl>
+    <div class="tbl">
+      <p class="cap" id="cap-gates">Gates. An item is written only when its gate passes. The gates are a judgment, not a measurement.</p>
+      <div class="table-wrap" role="region" aria-labelledby="cap-gates" tabindex="0">
+      <table aria-labelledby="cap-gates">
+        <thead><tr><th scope="col">Item</th><th scope="col">Written when</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Area skill, 0 to 3</th><td>A co-change group as above.</td></tr>
+          <tr><th scope="row">Locator subagent</th><td>At least 40 source files and a co-change group strong enough for an area skill.</td></tr>
+          <tr><th scope="row">Test-runner subagent</th><td>At least 3 history-paired tests and a command that runs one test file (<code>pytest</code>, not <code>npm run ...</code>).</td></tr>
+          <tr><th scope="row">Any of them</th><td>At least 200 commits of history. A shallow clone with fewer gets none and is told to run <code>git fetch --unshallow</code>. <code>generate</code> never fetches.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="prose">
+      <p><strong>Every item cites its evidence commits</strong>, all at or before the commit it was generated from, in <code>.olivium/native-provenance.json</code>. Size limits: listing at most 1,200 bytes, description at most 200 bytes, each skill or agent body at most 2,048 bytes.</p>
+      <p><code>--native all|skills|agents|none</code> picks what is written. The default is <code>all</code>; a bad value exits 2. Settings gain one <code>Skill(olivium-area-&lt;name&gt;)</code> allow rule per generated skill, never bare <code>Skill</code>. No skill has <code>allowed-tools</code>. Forged log records, <code>---</code>, backticks and <code>$(...)</code> in commit subjects, and quotes, newlines or <code>@</code> in file names reach no export (end-to-end check C25).</p>
+      <p><strong>Optional AI step.</strong> <code>harnessforge learn</code> with <code>--context lean-ai</code> lets a model read the history and propose skills and subagents as paths, commit hashes and command ids, never free text. The same templates render them, and a test runner keeps only commands that ran in Docker with no network. This route has run only with a scripted mock learner, not with a real model.</p>
+    </div>
+    <div class="tbl">
+      <p class="cap" id="cap-repos">What the current code writes for four public repositories, 2026-11-13, <code>--native all</code>. Tokens are estimates from bytes.</p>
+      <div class="table-wrap" role="region" aria-labelledby="cap-repos" tabindex="0">
+      <table class="stack t-wide" aria-labelledby="cap-repos">
+        <thead><tr><th scope="col">Repository</th><th scope="col">Clone</th><th scope="col">Skills</th><th scope="col">Subagents</th><th scope="col" class="n">Tokens per request</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">axios</th><td data-label="Clone">shallow, 400 commits</td><td data-label="Skills">2: <code>index-axios</code>, <code>http-mergeconfig</code></td><td data-label="Subagents">locator; test runner dropped (<code>runner_command_unsuitable</code>)</td><td data-label="Tokens per request" class="n">3,624</td></tr>
+          <tr><th scope="row">axios</th><td data-label="Clone">full</td><td data-label="Skills">2</td><td data-label="Subagents">locator</td><td data-label="Tokens per request" class="n">3,615</td></tr>
+          <tr><th scope="row">mocha</th><td data-label="Clone">shallow</td><td data-label="Skills">none (<code>gate_failed</code>)</td><td data-label="Subagents">none</td><td data-label="Tokens per request" class="n">0</td></tr>
+          <tr><th scope="row">mocha</th><td data-label="Clone">full</td><td data-label="Skills">1: <code>cli</code></td><td data-label="Subagents">locator</td><td data-label="Tokens per request" class="n">3,544</td></tr>
+          <tr><th scope="row">jsonschema</th><td data-label="Clone">shallow</td><td data-label="Skills">none (<code>gate_failed</code>)</td><td data-label="Subagents">none</td><td data-label="Tokens per request" class="n">0</td></tr>
+          <tr><th scope="row">jsonschema</th><td data-label="Clone">full</td><td data-label="Skills">none (<code>gate_failed</code>)</td><td data-label="Subagents">none</td><td data-label="Tokens per request" class="n">0</td></tr>
+          <tr><th scope="row">sqlite-utils</th><td data-label="Clone">shallow</td><td data-label="Skills">1: <code>sqlite-utils</code></td><td data-label="Subagents">test runner (<code>pytest</code>); locator dropped (<code>gate_failed</code>)</td><td data-label="Tokens per request" class="n">3,558</td></tr>
+          <tr><th scope="row">sqlite-utils</th><td data-label="Clone">full</td><td data-label="Skills">1</td><td data-label="Subagents">test runner (<code>pytest</code>)</td><td data-label="Tokens per request" class="n">3,558</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="rerun" aria-labelledby="rerun-h">
+  <div class="sec-label"><b>Latest</b><span>2026-11-14</span><span>96 paid runs</span></div>
+  <div class="sec-body">
+    <h2 id="rerun-h">Re-run of the 8 benchmark tasks with the current generator</h2>
+    <p class="note">Four setups, 24 runs each (8 tasks &times; 3 repeats, one shuffled order): no instruction file; a <code>CLAUDE.md</code> from Claude Code's <code>/init</code>, generated again for this run; the default Olivium export (<code>lean</code> settings plus generated skills and subagents); and the same export with <code>--native none</code>. Claude Code 2.1.311, <code>claude-sonnet-5-5</code>, one Docker container per run, hidden-test grading. The protocol was written and hashed before any paid request. <strong>These are development tasks:</strong> the generator was changed while looking at results on them, including the three werkzeug tasks the 2026-11-10 run held out.</p>
+
+    <figure class="chart" aria-labelledby="c0-t">
+      <div><p class="chart-title" id="c0-t">Median tokens per run</p><p class="chart-sub">24 runs per setup, 8 development tasks. Highlighted: the default Olivium export.</p></div>
+      <div class="bars">
+        <div class="bar"><div class="bar-label">No instruction file<small>15 of 24 solved</small></div>
+          <svg viewBox="0 0 125000 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="125000" height="22"/><line class="tick" x1="25000" x2="25000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="50000" x2="50000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="75000" x2="75000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="100000" x2="100000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="108861" height="16"><title>No instruction file: 108,861 tokens per run</title></rect></svg>
+          <div class="bar-val">108,861<small>$0.0517 per run</small></div></div>
+        <div class="bar"><div class="bar-label">Claude Code <code>/init</code><small>13 of 24 solved</small></div>
+          <svg viewBox="0 0 125000 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="125000" height="22"/><line class="tick" x1="25000" x2="25000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="50000" x2="50000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="75000" x2="75000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="100000" x2="100000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="121602" height="16"><title>Claude Code /init: 121,602 tokens per run</title></rect></svg>
+          <div class="bar-val">121,602<small>$0.0559 per run</small></div></div>
+        <div class="bar hl"><div class="bar-label">Olivium export<small>18 of 24 solved</small></div>
+          <svg viewBox="0 0 125000 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="125000" height="22"/><line class="tick" x1="25000" x2="25000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="50000" x2="50000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="75000" x2="75000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="100000" x2="100000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="65976.5" height="16"><title>Olivium export: 65,976.5 tokens per run</title></rect></svg>
+          <div class="bar-val">65,976.5<small>$0.0487 per run</small></div></div>
+        <div class="bar"><div class="bar-label">Olivium, <code>--native none</code><small>15 of 24 solved</small></div>
+          <svg viewBox="0 0 125000 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="125000" height="22"/><line class="tick" x1="25000" x2="25000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="50000" x2="50000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="75000" x2="75000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="100000" x2="100000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="43249" height="16"><title>Olivium, --native none: 43,249 tokens per run</title></rect></svg>
+          <div class="bar-val">43,249<small>$0.0460 per run</small></div></div>
+        <div class="axis" aria-hidden="true"><div class="axis-scale"><span style="left:0%">0</span><span style="left:20%">25k</span><span style="left:40%">50k</span><span style="left:60%">75k</span><span style="left:80%">100k</span><span style="left:100%">125k</span></div><div class="axis-unit">tokens</div></div>
+      </div>
+      <p class="note">Most of these tokens are cache reads, which cost far less than input, so dollars moved much less than tokens: median cost per run ranged from $0.0460 to $0.0559.</p>
+      <p class="src">docs/benchmarks/value-v2r-2026-11-13/results.json, 2026-11-14, 03:00 to 03:54 UTC. API-reported tokens (input, output, cache write and cache read, unweighted), from the metering proxy.</p>
+    </figure>
+
+    <div class="tbl">
+      <p class="cap" id="cap-rerun">Per setup, 24 scored runs each. Median cost and tokens are per run. Skill calls: one per run; denied means the Skill tool is denied.</p>
+      <div class="table-wrap" role="region" aria-labelledby="cap-rerun" tabindex="0">
+      <table class="stack t-wide" aria-labelledby="cap-rerun">
+        <thead><tr><th scope="col">Setup</th><th scope="col">Solved</th><th scope="col">Total cost</th><th scope="col">Cost per solved</th><th scope="col">Median cost</th><th scope="col">Median tokens</th><th scope="col">Mean turns</th><th scope="col">Skill calls</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">No instruction file</th><td data-label="Solved" class="n">15/24</td><td data-label="Total cost" class="n">$1.2104</td><td data-label="Cost per solved" class="n">$0.0807</td><td data-label="Median cost" class="n">$0.0517</td><td data-label="Median tokens" class="n">108,861</td><td data-label="Mean turns" class="n">5.54</td><td data-label="Skill calls" class="n">0</td></tr>
+          <tr><th scope="row">Claude Code <code>/init</code></th><td data-label="Solved" class="n">13/24</td><td data-label="Total cost" class="n">$1.4723</td><td data-label="Cost per solved" class="n">$0.1133<br>$0.1516 with setup</td><td data-label="Median cost" class="n">$0.0559</td><td data-label="Median tokens" class="n">121,602</td><td data-label="Mean turns" class="n">5.92</td><td data-label="Skill calls" class="n">0</td></tr>
+          <tr><th scope="row">Olivium export</th><td data-label="Solved" class="n">18/24</td><td data-label="Total cost" class="n">$1.2075</td><td data-label="Cost per solved" class="n">$0.0671</td><td data-label="Median cost" class="n">$0.0487</td><td data-label="Median tokens" class="n">65,976.5</td><td data-label="Mean turns" class="n">5.50</td><td data-label="Skill calls" class="n">6</td></tr>
+          <tr><th scope="row">Olivium, <code>--native none</code></th><td data-label="Solved" class="n">15/24</td><td data-label="Total cost" class="n">$1.0653</td><td data-label="Cost per solved" class="n">$0.0710</td><td data-label="Median cost" class="n">$0.0460</td><td data-label="Median tokens" class="n">43,249</td><td data-label="Mean turns" class="n">5.71</td><td data-label="Skill calls" class="n">0, denied</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="tbl">
+      <p class="cap" id="cap-rerun-diff">Olivium export minus each setup: median of per-task differences, 95% bootstrap interval over the 8 tasks</p>
+      <div class="table-wrap" role="region" aria-labelledby="cap-rerun-diff" tabindex="0">
+      <table class="stack t-mid t-wrap" aria-labelledby="cap-rerun-diff">
+        <thead><tr><th scope="col">Compared with</th><th scope="col">Tokens per run</th><th scope="col">Cost per run</th><th scope="col">Solved share</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">No instruction file</th><td data-label="Tokens" class="n">&minus;53,197<br>[&minus;72,241, &minus;16,825]</td><td data-label="Cost" class="n">&minus;$0.0039<br>[&minus;$0.0093, +$0.0162]</td><td data-label="Solved" class="n">0.00<br>[0.00, 0.00]</td></tr>
+          <tr><th scope="row">Olivium, <code>--native none</code></th><td data-label="Tokens" class="n">+14,957<br>[&minus;7,723, +31,014]</td><td data-label="Cost" class="n">+$0.0066<br>[&minus;$0.0105, +$0.0191]</td><td data-label="Solved" class="n">0.00<br>[0.00, +0.33]</td></tr>
+          <tr><th scope="row">Claude Code <code>/init</code></th><td data-label="Tokens" class="n">&minus;57,708<br>[&minus;97,268, &minus;29,319]</td><td data-label="Cost" class="n">&minus;$0.0107<br>[&minus;$0.0199, &minus;$0.0003]</td><td data-label="Solved" class="n">0.00<br>[0.00, +0.67]</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <p class="note">An interval that includes zero is a difference these data cannot tell from no effect. Against no file, tokens were lower on 7 of 8 tasks; the 3 extra solves (18 against 15) all came from one task, <code>pallets-werkzeug-3266</code>. Against <code>/init</code>, the cost interval's upper end is close to zero and <code>/init</code>'s $0.4991 setup cost is not included. Two tasks were solved by no setup and four by every run of every setup.</p>
+
+    <dl class="rows">
+      <div><dt>Skills and subagents</dt><dd>A generated skill was called in 6 of 24 Olivium runs: one skill in all 3 runs of <code>pallets-click-3769</code> and one in all 3 runs of <code>pallets-werkzeug-3273</code>. No setup solved either task. No run in any setup started a subagent, and none of the 18 solved Olivium runs used a skill. The comparison with <code>--native none</code> covers the whole native configuration (files, Skill and Agent tools, built-in-agent rules), not the files alone.</dd></div>
+      <div><dt>Bundled skills</dt><dd>Exports with generated skills set <code>disableBundledSkills</code>, yet Claude Code 2.1.311 still listed <code>doctor</code> and <code>plugin-authoring</code>. Exports without generated skills (the Express task and every <code>--native none</code> export) do not set it and listed all 16 bundled skills. Measured as exported.</dd></div>
+      <div><dt>One repeated run</dt><dd>One <code>/init</code>-setup run was killed (exit 137) after 67 s while the agent's own <code>pytest -n auto</code> ran under a 1.5 GB container limit. The runner scored it as an infrastructure error and the protocol allows a repeat, which solved. Whether the agent's command caused the kill is not established. Scored as a failure, <code>/init</code> would be 12/24 and no median above would change.</dd></div>
+      <div><dt>Independent check</dt><dd>A separate script recomputed every figure from the raw rows without importing benchmark code and matched every headline number. It corrected small slips in the run's written summary: the 96 scored runs cost $4.955478 (not $4.955318), and three per-task mean costs had been rounded twice. The numbers here are the recomputed ones.</dd></div>
+      <div><dt>Spend</dt><dd>$5.507054 metered, 587 requests, cap $15: $0.499052 for <code>/init</code>, $4.955478 for the 96 scored runs, $0.052524 for the repeated attempt.</dd></div>
+    </dl>
+    <ul class="limits">
+      <li><strong>Development tasks.</strong> 8 tasks from 5 repositories that the generator was tuned on. Not held out; it cannot show a gain on unseen repositories.</li>
+      <li><strong>Small and narrow.</strong> One model, one agent, bug fixes only (7 Python, 1 JavaScript), 3 repeats per setup.</li>
+      <li><strong>Short sessions.</strong> Median 5 turns, mostly Bash. Skills were rarely used and subagents never, so this run cannot show what they add when used.</li>
+      <li><strong>Not paired with earlier runs.</strong> The 2026-11-10 benchmark used an older generator and a different <code>/init</code> file. Comparisons with it are between different runs on different days.</li>
+    </ul>
+    <p class="src">docs/benchmarks/value-v2r-2026-11-13/results.json and provenance.json (protocol hashes, snapshot digests, commands, checks, corrections); protocol bench/value/PROTOCOL-v2r.md, SHA-256 f5b92f61 at the paid run. The directory name is the one the protocol fixed in advance.</p>
+  </div>
+</section>
+
+<section class="sec" id="measured" aria-labelledby="measured-h">
+  <div class="sec-label"><b>Measured</b><span>claude-sonnet-5-5</span><span>Claude Code 2.1.311</span></div>
+  <div class="sec-body">
+    <h2 id="measured-h">Measured tokens, cost and accuracy</h2>
+    <p class="note">Every paid run: one headless Claude Code session in its own Docker container whose only network peer is a metering proxy, graded by the real pull request's hidden tests in a container with no network. WebSearch and WebFetch were removed in every setup.</p>
+
+    <figure class="chart" aria-labelledby="c1-t">
+      <div><p class="chart-title" id="c1-t">Mean tokens per run</p><p class="chart-sub">Gate 1 development test, 8 tasks. Highlighted: the settings alone, with no generated file.</p></div>
+      <div class="bars">
+        <div class="bar"><div class="bar-label">No harness<small>16 runs, 10 solved</small></div>
+          <svg viewBox="0 0 120000 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="120000" height="22"/><line class="tick" x1="40000" x2="40000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="80000" x2="80000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="114047" height="16"><title>No harness: 114,047 tokens per run</title></rect></svg>
+          <div class="bar-val">114,047<small>1.00x</small></div></div>
+        <div class="bar"><div class="bar-label"><code>lean</code> export<small>16 runs, 10 solved</small></div>
+          <svg viewBox="0 0 120000 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="120000" height="22"/><line class="tick" x1="40000" x2="40000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="80000" x2="80000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="44522" height="16"><title>lean export: 44,522 tokens per run</title></rect></svg>
+          <div class="bar-val">44,522<small>0.39x</small></div></div>
+        <div class="bar hl"><div class="bar-label"><code>lean</code> settings alone<small>8 runs, 5 solved</small></div>
+          <svg viewBox="0 0 120000 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="120000" height="22"/><line class="tick" x1="40000" x2="40000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="80000" x2="80000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="42423" height="16"><title>lean settings alone: 42,423 tokens per run</title></rect></svg>
+          <div class="bar-val">42,423<small>0.37x</small></div></div>
+        <div class="axis" aria-hidden="true"><div class="axis-scale"><span style="left:0%">0</span><span style="left:33.333%">40k</span><span style="left:66.667%">80k</span><span style="left:100%">120k</span></div><div class="axis-unit">tokens</div></div>
+      </div>
+      <p class="note">Dollars fell less than tokens: the export cost $0.0391 per run against $0.0524, 0.75x. Most of the removed tokens are the cached prefix, read at $0.10 per million against $2 per million for input.</p>
+      <p class="src">Gate 1, 2026-11-11, 04:53 to 05:20 UTC, $1.76. 8 benchmark tasks the generator was tuned on, so not held out. API-reported tokens (input, output, cache write and cache read, unweighted). No interval computed. The test's own report says its numbers can catch defects and are not evidence that the harness helps. Raw data not published.</p>
+    </figure>
+
+    <figure class="chart" aria-labelledby="c2-t">
+      <div><p class="chart-title" id="c2-t">Size of the first request Claude Code sends</p><p class="chart-sub">Bytes, no model call. Two separate captures, drawn on one scale.</p></div>
+      <div class="bars">
+        <p class="bar-group">Capture on a benchmark task</p>
+        <div class="bar"><div class="bar-label">No settings<small>tools array is 61%, 29,653 B</small></div>
+          <svg viewBox="0 0 50000 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="50000" height="22"/><line class="tick" x1="10000" x2="10000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="20000" x2="20000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="30000" x2="30000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="40000" x2="40000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="48673" height="16"><title>No settings: 48,673 bytes</title></rect></svg>
+          <div class="bar-val">48,673 B</div></div>
+        <div class="bar hl"><div class="bar-label"><code>lean</code> settings<small>about 12,100 fewer tokens</small></div>
+          <svg viewBox="0 0 50000 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="50000" height="22"/><line class="tick" x1="10000" x2="10000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="20000" x2="20000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="30000" x2="30000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="40000" x2="40000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="16228" height="16"><title>lean settings: 16,228 bytes</title></rect></svg>
+          <div class="bar-val">16,228 B</div></div>
+        <p class="bar-group">Capture on the synthetic test repository, <code>lean</code> export</p>
+        <div class="bar"><div class="bar-label"><code>--native none</code><small>no skill or subagent</small></div>
+          <svg viewBox="0 0 50000 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="50000" height="22"/><line class="tick" x1="10000" x2="10000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="20000" x2="20000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="30000" x2="30000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="40000" x2="40000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="14080" height="16"><title>--native none: 14,080 bytes</title></rect></svg>
+          <div class="bar-val">14,080 B</div></div>
+        <div class="bar"><div class="bar-label"><code>--native all</code><small>1 skill, 2 subagents</small></div>
+          <svg viewBox="0 0 50000 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="50000" height="22"/><line class="tick" x1="10000" x2="10000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="20000" x2="20000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="30000" x2="30000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="40000" x2="40000" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="23828" height="16"><title>--native all: 23,828 bytes</title></rect></svg>
+          <div class="bar-val">23,828 B<small>+3,625 tokens</small></div></div>
+        <div class="axis" aria-hidden="true"><div class="axis-scale"><span style="left:0%">0</span><span style="left:20%">10k</span><span style="left:40%">20k</span><span style="left:60%">30k</span><span style="left:80%">40k</span><span style="left:100%">50k</span></div><div class="axis-unit">bytes</div></div>
+      </div>
+      <p class="note"><code>lean</code> turns off the git instructions and 15 Claude Code tools. In the 96 recorded benchmark runs the agent made 568 tool calls (Bash 507, Read 36, Edit 21, Write 4) and never called any of those 15. Generated skills and subagents give part of the saving back: +9,748 bytes, 3,625 tokens measured against 3,624 estimated. Most of it is the <code>Task</code> tool and the built-in subagents Claude Code then lists. Each subagent call also costs 3,472 to 4,582 tokens per turn of its own, not counted here.</p>
+      <p class="src">Real Claude Code 2.1.311 with a capture server or a mock model, $0. Benchmark-task capture from the design probe; synthetic capture from end-to-end check E-N2, 2026-11-13. Tokens are estimates from exact bytes (2.46 to 2.78 bytes per token, fit on 24 live first requests), not billed tokens.</p>
+    </figure>
+
+    <div class="tbl">
+      <p class="cap" id="cap-paid">Every scored test from benchmark v2 on. Only the benchmark v2 and re-run rows are published with raw data. None is held out.</p>
+      <div class="table-wrap" role="region" aria-labelledby="cap-paid" tabindex="0">
+      <table class="stack t-wide t-wrap" aria-labelledby="cap-paid">
+        <thead><tr><th scope="col">Test</th><th scope="col">Tasks, runs</th><th scope="col">Compared with</th><th scope="col">Tokens</th><th scope="col">Solved</th><th scope="col">Dollars</th><th scope="col">Result</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Benchmark v2, first run</th><td data-label="Tasks, runs">8 bug fixes, 24 runs per setup</td><td data-label="Compared with">no instruction file</td><td data-label="Tokens" class="n">143,260 vs 110,307 median</td><td data-label="Solved" class="n">15/24 each</td><td data-label="Dollars" class="n">+$0.0105 per run<br>[+$0.0029, +$0.0404]</td><td data-label="Result">costlier on all 8 tasks; its own settings refused 35 calls</td></tr>
+          <tr><th scope="row">Benchmark v2, after fix</th><td data-label="Tasks, runs">same 8, 24 runs</td><td data-label="Compared with">no instruction file</td><td data-label="Tokens" class="n">134,610 vs 110,307 median</td><td data-label="Solved" class="n">15/24 each</td><td data-label="Dollars" class="n">+$0.0016 per run<br>[&minus;$0.0031, +$0.0158]</td><td data-label="Result">no clear difference</td></tr>
+          <tr><th scope="row">Benchmark v2, after fix</th><td data-label="Tasks, runs">same 8, 24 runs</td><td data-label="Compared with">Claude Code <code>/init</code></td><td data-label="Tokens" class="n">134,610 vs 135,362 median</td><td data-label="Solved" class="n">15/24 each</td><td data-label="Dollars" class="n">&minus;$0.0032 per run<br>[&minus;$0.0098, +$0.0094]</td><td data-label="Result">no clear difference</td></tr>
+          <tr><th scope="row">Re-run, default export</th><td data-label="Tasks, runs">same 8, 24 runs per setup, 2026-11-14</td><td data-label="Compared with">no instruction file</td><td data-label="Tokens" class="n">&minus;53,197 per run<br>[&minus;72,241, &minus;16,825]</td><td data-label="Solved" class="n">18/24 vs 15/24</td><td data-label="Dollars" class="n">&minus;$0.0039 per run<br>[&minus;$0.0093, +$0.0162]</td><td data-label="Result">fewer tokens; cost and solved no clear difference</td></tr>
+          <tr><th scope="row">Re-run, default export</th><td data-label="Tasks, runs">same 8, 24 runs</td><td data-label="Compared with"><code>--native none</code></td><td data-label="Tokens" class="n">+14,957 per run<br>[&minus;7,723, +31,014]</td><td data-label="Solved" class="n">18/24 vs 15/24</td><td data-label="Dollars" class="n">+$0.0066 per run<br>[&minus;$0.0105, +$0.0191]</td><td data-label="Result">no clear difference</td></tr>
+          <tr><th scope="row">Re-run, default export</th><td data-label="Tasks, runs">same 8, 24 runs</td><td data-label="Compared with">Claude Code <code>/init</code></td><td data-label="Tokens" class="n">&minus;57,708 per run<br>[&minus;97,268, &minus;29,319]</td><td data-label="Solved" class="n">18/24 vs 13/24</td><td data-label="Dollars" class="n">&minus;$0.0107 per run<br>[&minus;$0.0199, &minus;$0.0003]</td><td data-label="Result">fewer tokens and lower cost, setup excluded; solved no clear difference</td></tr>
+          <tr><th scope="row">Gate 1, <code>lean</code> export</th><td data-label="Tasks, runs">same 8, 16 runs</td><td data-label="Compared with">no harness</td><td data-label="Tokens" class="n">0.39x, no interval</td><td data-label="Solved" class="n">10/16 vs 10/16</td><td data-label="Dollars" class="n">0.75x</td><td data-label="Result">report: not evidence of help</td></tr>
+          <tr><th scope="row">Gate 1, settings alone</th><td data-label="Tasks, runs">same 8, 8 runs</td><td data-label="Compared with">no harness</td><td data-label="Tokens" class="n">0.37x, no interval</td><td data-label="Solved" class="n">5/8 vs 10/16</td><td data-label="Dollars" class="n">$0.2986 for 8 runs</td><td data-label="Result">the saving is the settings</td></tr>
+          <tr><th scope="row"><code>lean-ai</code></th><td data-label="Tasks, runs">7 harder tasks, 14 runs</td><td data-label="Compared with"><code>lean</code> settings alone</td><td data-label="Tokens" class="n">0.96x<br>[0.75, 1.28]</td><td data-label="Solved" class="n">3/14 vs 2/14</td><td data-label="Dollars" class="n">$0.05842 vs $0.06135 per run</td><td data-label="Result"><span class="res fail">stop_or_redesign</span> (bar 0.80)</td></tr>
+          <tr><th scope="row"><code>lean-x</code></th><td data-label="Tasks, runs">7 tasks, 21 runs</td><td data-label="Compared with"><code>lean</code> settings alone</td><td data-label="Tokens" class="n">0.80x<br>[0.68, 0.96]</td><td data-label="Solved" class="n">3/21 each</td><td data-label="Dollars" class="n">0.89x</td><td data-label="Result"><span class="res fail">fail</span> (bar 0.75); one task gave 53.5% of the saving</td></tr>
+          <tr><th scope="row">Held-out pilot</th><td data-label="Tasks, runs">24 tasks, 14 repositories</td><td data-label="Compared with">none</td><td data-label="Tokens" class="n">no scored run</td><td data-label="Solved" class="n">5 of 70 pilot runs</td><td data-label="Dollars" class="n">$9.05</td><td data-label="Result"><span class="res fail">stopped</span>: 2 usable tasks, floor 12</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <p class="note">An earlier 5-task pilot (2026-11-09, 15 runs per setup, 12 of 15 solved in each) is published in <code>docs/benchmarks/value-2026-11-09</code>; its spend is inside the benchmark v2 bar below. Brackets are 95% intervals. Benchmark v2 differences are medians of per-task differences, bootstrapped over tasks. Accuracy could not move in v2: in every setup 5 tasks were solved by all 3 runs and 3 by none. Its baselines ran with permission checks bypassed and Olivium with its own. In <code>lean-x</code>, 6 of 7 tasks went unsolved in all 42 runs, so its solve count carries almost no information. <code>lean-ai</code> learning cost 450,995 tokens ($0.0336) per repository.</p>
+    <dl class="rows">
+      <div><dt>Stop hook, earlier version</dt><dd>Measured 2026-11-11 on an earlier hook that also ran history-paired tests. The current hook runs only changed test files and was not re-measured on these patches. On the 96 recorded benchmark patches, with real tools in Docker, no network and 4 parallel jobs: 96 of 96 applied, 0 blocks, hook time median 11.2 s, p90 33.1 s, max 51.9 s. On the 8 real fixes (mock model, gold patch, one session each): 6 passed and 2 blocked (werkzeug-3266 and -3273, true positives found by history-paired tests); the hook added 0.0 to 17.1 s per session.</dd></div>
+      <div><dt>Env check</dt><dd>"Tool not installed" results per run: 0.000 with the Olivium export, 0.250 with no harness. Gate 1, 2026-11-11, 16 runs each on tasks the generator was tuned on; a defect check, not evidence of help.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="sec" id="proven" aria-labelledby="proven-h">
+  <div class="sec-label"><b>Proven at $0</b><span>mock model</span><span>2026-11-13</span></div>
+  <div class="sec-body">
+    <h2 id="proven-h">What real Claude Code did with the generated skill and subagents</h2>
+    <p class="note">Claude Code 2.1.311 in Docker on an internal network whose only peer was a mock model. Permission mode <code>default</code>, synthetic repository with one skill and two subagents. Six checks, all passed. No model call; teardown left 0 containers.</p>
+    <dl class="rows">
+      <div><dt>E-N1 <span class="res pass">pass</span></dt><dd>Tools with <code>--native all</code>: Agent, Bash, Edit, Read, Skill, Write. With <code>none</code>: Bash, Edit, Read, Write. Built-in subagents stay listed; the export has no switch for them.</dd></div>
+      <div><dt>E-N2 <span class="res pass">pass</span></dt><dd>First request 23,828 B with all, 14,080 B with none: +9,748 B, 3,625 tokens against 3,624 estimated.</dd></div>
+      <div><dt>E-N3 <span class="res pass">pass</span></dt><dd>The skill body is not in the first request. After the call, "Launching skill" appears and the body is in the 3 later requests.</dd></div>
+      <div><dt>E-N4 <span class="res pass">pass</span></dt><dd>The locator's requests carry only Glob, Grep and Read. Its Bash call got "No such tool available". Only its hand-back reaches the main session (668 to 686 bytes per call in the earlier design probe).</dd></div>
+      <div><dt>E-N5 <span class="res pass">pass</span></dt><dd>The guard let <code>pytest tests/test_http.py</code> through from the test runner and refused <code>ls tests</code>. It checks permissions only. In the fixture, pytest reported the file not found.</dd></div>
+      <div><dt>E-N6 <span class="res pass">pass</span></dt><dd>A scripted session calling the skill and both subagents ended in <code>success</code> after 5 turns with no permission denial.</dd></div>
+    </dl>
+    <p class="note">The same probe found two limits. In an untrusted workspace Claude Code printed "Ignoring 45 permissions.allow entries from .claude/settings.json". The setting that hides the built-in subagents worked only when passed with <code>--settings</code>, not from project settings, so the export does not write it.</p>
+  </div>
+</section>
+
+<section class="sec" id="safety" aria-labelledby="safety-h">
+  <div class="sec-label"><b>Safety</b><span>guard and deny rules</span></div>
+  <div class="sec-body">
+    <h2 id="safety-h">What the settings and the guard refuse</h2>
+    <div class="cols">
+      <div>
+        <h3>Deny rules</h3>
+        <div class="chips"><code>rm -r</code><code>rm -rf</code><code>sudo</code><code>curl</code><code>wget</code><code>ssh</code><code>gh</code><code>git fetch</code><code>git pull</code><code>git clone</code><code>git push</code><code>git reset --hard</code><code>git clean</code><code>git rebase</code><code>cat .env</code></div>
+        <p class="note">Also publish commands and edits to secret file patterns. A real export (sqlite-utils) has 115 deny, 49 allow and 0 ask rules. <code>git commit</code> is allowed because a local commit can be undone; <code>git push</code> and <code>gh</code> stay denied.</p>
+        <p class="note">Claude Code enforces these without the guard. With the guard file deleted and plain Bash allowed, it refused 9 of 9 dangerous commands. That test ran while <code>git commit</code> was still denied.</p>
+      </div>
+      <div>
+        <h3>The guard only takes calls away</h3>
+        <p class="note">In the $0 replay: 142 PreToolUse responses, 0 approvals, 0 nonzero exits. Over 1,099 calls run with and without it, no call ran with the full export that did not also run with the rules alone.</p>
+        <p class="note">Refusals in paid runs: 35 in 14 of 24 runs before the fix, 4 in 4 of 24 after. All 4 came from the guard, on purpose: one home-directory listing and three package-registry fetches.</p>
+      </div>
+    </div>
+    <div class="tbl">
+      <p class="cap" id="cap-replay">Replay gate on the synthetic call list with test-runner calls, 2026-11-13, $0</p>
+      <div class="table-wrap" role="region" aria-labelledby="cap-replay" tabindex="0">
+      <table aria-labelledby="cap-replay">
+        <thead><tr><th scope="col">Call list</th><th scope="col" class="n">Calls</th><th scope="col" class="n">Refused</th><th scope="col" class="n">By guard</th><th scope="col" class="n">By settings</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Normal work</th><td class="n">44</td><td class="n">0</td><td class="n">0</td><td class="n">0</td></tr>
+          <tr><th scope="row">Unsafe</th><td class="n">57</td><td class="n">57</td><td class="n">32</td><td class="n">25</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <p class="note">In 4 unsafe cases a different layer refused than the list expected; all 4 were still refused. The list includes 12 test-runner entries.</p>
+    <ul class="limits">
+      <li><strong>Not a sandbox.</strong> An allowed interpreter or test runner runs with your rights. Run unattended sessions in a container or VM.</li>
+      <li><strong>Known gap.</strong> A program the agent runs can rewrite <code>.claude/settings.local.json</code>. The guard sees <code>sed</code>, <code>tee</code> and redirect writes, not a <code>python3</code> or <code>node</code> write.</li>
+      <li><strong>Trust.</strong> In an untrusted workspace Claude Code ignores the exported allow rules.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="unproven" aria-labelledby="unproven-h">
+  <div class="sec-label"><b>Not proven</b></div>
+  <div class="sec-body">
+    <h2 id="unproven-h">What is not proven</h2>
+    <ul class="limits">
+      <li><strong>No held-out result.</strong> No <code>lean</code> profile has one. The held-out pilot stopped with 2 usable tasks of 24, against a floor of 12.</li>
+      <li><strong>The one large saving is settings you can set by hand.</strong> <code>includeGitInstructions: false</code> and 15 tool denies: 0.37x alone, 0.39x with the full export. 8 tasks the generator was tuned on, 16 runs per setup, no interval.</li>
+      <li><strong>The generated CLAUDE.md and hooks</strong> did not cut tokens or raise solves beyond the settings in any test so far.</li>
+      <li><strong>Skills and subagents show no measured effect.</strong> One paid A/B run on 8 development tasks (2026-11-14): skills were called in 6 of 24 runs, all on tasks no setup solved, and subagents never; no difference in tokens, cost or solved share could be told from zero. Whether they help when used, or on other repositories, is not measured. Their cost is estimated at +3,544 to +3,624 tokens per request on three real repositories; the estimate matched a live capture on the synthetic repository (3,625 measured against 3,624). Each subagent turn adds about 3,472 to 4,582 tokens of its own, also estimated from bytes.</li>
+      <li><strong>Their content is mechanical.</strong> Paths, test pairs and bare fix hashes. A review before the last repair rated it partly useful; on full history about half of the content was wrong or noise. The repair fixed the listed blockers. It does not add commit subjects.</li>
+      <li><strong>Some repositories get nothing.</strong> jsonschema gets no skill or subagent even with full history. mocha gets none from a shallow clone.</li>
+      <li><strong>Not verified.</strong> Whether <code>maxTurns</code> is enforced. The per-name <code>Skill(&lt;name&gt;)</code> rule is verified live for one skill on the synthetic fixture only. The learned route ran only with a scripted mock learner.</li>
+      <li><strong>One model, one agent.</strong> <code>claude-sonnet-5-5</code> and Claude Code 2.1.311. Tool names and byte costs are specific to that version.</li>
+      <li><strong><code>lean</code> turns off your own skills and subagents</strong> in that project, unless the repository has its own <code>.claude/agents</code> or <code>.claude/skills</code>. Then they are kept and the saving is reported as not measured.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="evidence" aria-labelledby="evidence-h">
+  <div class="sec-label"><b>Evidence</b><span>all at $0</span></div>
+  <div class="sec-body">
+    <h2 id="evidence-h">Evidence and spend</h2>
+    <div class="tbl">
+      <p class="cap" id="cap-suites">Suite runs, 2026-11-13</p>
+      <div class="table-wrap" role="region" aria-labelledby="cap-suites" tabindex="0">
+      <table class="stack t-mid" aria-labelledby="cap-suites">
+        <thead><tr><th scope="col">Suite</th><th scope="col">Result</th><th scope="col">What it drives</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><code>bench/run.sh</code></th><td data-label="Result"><span class="res pass">exit 0</span> e2e-browser 23/23, e2e-cli 30/30, pipeline and portal exit 0</td><td data-label="What it drives">the real portal and command line</td></tr>
+          <tr><th scope="row">e2e-native</th><td data-label="Result"><span class="res pass">exit 0</span> E-N1 to E-N6 pass, 178 s</td><td data-label="What it drives">real Claude Code, mock model</td></tr>
+          <tr><th scope="row">e2e-learn</th><td data-label="Result"><span class="res pass">exit 0</span> 43 pass, 0 fail, 687 s</td><td data-label="What it drives">Docker, mock meter</td></tr>
+          <tr><th scope="row"><code>mix test</code></th><td data-label="Result">1,984 tests, 0 failures, 30 skipped, 649.8 s</td><td data-label="What it drives">development check, not evidence of behavior</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <p class="note">Failed runs are kept. One <code>mix test</code> run had 312 failures from a polluted build directory, not from code. e2e-cli was at 27/30, then 29/30, before fixes to checks C27, C29 and C31.</p>
+
+    <figure class="chart" aria-labelledby="c3-t">
+      <div><p class="chart-title" id="c3-t">Paid spend: $33.00 of $60 approved</p><p class="chart-sub">US dollars as metered, on a $0 to $60 scale.</p></div>
+      <div class="bars">
+        <div class="bar"><div class="bar-label">Benchmark v2<small>pilot, canaries, /init, scored, after fix</small></div>
+          <svg viewBox="0 0 60 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="60" height="22"/><line class="tick" x1="20" x2="20" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="40" x2="40" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="10.4882" height="16"><title>Benchmark v2: $10.49</title></rect></svg>
+          <div class="bar-val">$10.49</div></div>
+        <div class="bar"><div class="bar-label">Benchmark re-run<small>2026-11-14, /init and 96 runs</small></div>
+          <svg viewBox="0 0 60 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="60" height="22"/><line class="tick" x1="20" x2="20" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="40" x2="40" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="5.507054" height="16"><title>Benchmark re-run: $5.51</title></rect></svg>
+          <div class="bar-val">$5.51</div></div>
+        <div class="bar"><div class="bar-label">Held-out pilot<small>stopped</small></div>
+          <svg viewBox="0 0 60 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="60" height="22"/><line class="tick" x1="20" x2="20" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="40" x2="40" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="9.050065" height="16"><title>Held-out pilot: $9.05</title></rect></svg>
+          <div class="bar-val">$9.05</div></div>
+        <div class="bar"><div class="bar-label"><code>lean-ai</code> test</div>
+          <svg viewBox="0 0 60 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="60" height="22"/><line class="tick" x1="20" x2="20" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="40" x2="40" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="3.13525" height="16"><title>lean-ai test: $3.14</title></rect></svg>
+          <div class="bar-val">$3.14</div></div>
+        <div class="bar"><div class="bar-label"><code>lean-x</code> test</div>
+          <svg viewBox="0 0 60 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="60" height="22"/><line class="tick" x1="20" x2="20" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="40" x2="40" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="2.183183" height="16"><title>lean-x test: $2.18</title></rect></svg>
+          <div class="bar-val">$2.18</div></div>
+        <div class="bar"><div class="bar-label">Gate 1</div>
+          <svg viewBox="0 0 60 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="60" height="22"/><line class="tick" x1="20" x2="20" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="40" x2="40" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="1.761818" height="16"><title>Gate 1: $1.76</title></rect></svg>
+          <div class="bar-val">$1.76</div></div>
+        <div class="bar"><div class="bar-label">Other<small>learn runs and smaller steps</small></div>
+          <svg viewBox="0 0 60 22" preserveAspectRatio="none" aria-hidden="true"><rect class="trk" x="0" y="0" width="60" height="22"/><line class="tick" x1="20" x2="20" y1="0" y2="22" vector-effect="non-scaling-stroke"/><line class="tick" x1="40" x2="40" y1="0" y2="22" vector-effect="non-scaling-stroke"/><rect class="mark" x="0" y="3" width="0.87" height="16"><title>Other: about $0.87</title></rect></svg>
+          <div class="bar-val">about $0.87</div></div>
+        <div class="axis" aria-hidden="true"><div class="axis-scale"><span style="left:0%">$0</span><span style="left:33.333%">$20</span><span style="left:66.667%">$40</span><span style="left:100%">$60</span></div><div class="axis-unit">USD</div></div>
+      </div>
+      <p class="src">Benchmark v2 and re-run provenance files and the development test reports. "Other" is the total less the six items above; the sources read do not itemize it. The skills and subagents work, every end-to-end run above, and this page cost $0 in API spend.</p>
+    </figure>
+
+    <div class="cols">
+      <div>
+        <h3>Read further</h3>
+        <div class="links">
+          <a href="https://github.com/oudaykhaled/olivium-harness#readme">README</a>
+          <a href="benchmark.html">Benchmark page: method, results, limits</a>
+          <a href="https://github.com/oudaykhaled/olivium-harness/blob/main/CHANGELOG.md">CHANGELOG.md</a>
+          <a href="https://github.com/oudaykhaled/olivium-harness/blob/main/docs/claude-code-connector.md">docs/claude-code-connector.md</a>
+        </div>
+      </div>
+      <div>
+        <h3>Raw data: benchmark v2 and re-run</h3>
+        <div class="links">
+          <a href="assets/bench/sources/docs/benchmarks/value-v2r-2026-11-13/report.md">docs/benchmarks/value-v2r-2026-11-13/report.md</a>
+          <a href="assets/bench/sources/docs/benchmarks/value-v2r-2026-11-13/results.json">docs/benchmarks/value-v2r-2026-11-13/results.json</a>
+          <a href="assets/bench/sources/docs/benchmarks/value-v2r-2026-11-13/provenance.json">docs/benchmarks/value-v2r-2026-11-13/provenance.json</a>
+          <a href="assets/bench/sources/bench/value/PROTOCOL-v2r.md">bench/value/PROTOCOL-v2r.md</a>
+          <a href="assets/bench/sources/docs/benchmarks/value-v2-2026-11-10-fix/results.json">docs/benchmarks/value-v2-2026-11-10-fix/results.json</a>
+          <a href="assets/bench/sources/docs/benchmarks/value-v2-2026-11-10-fix/report.md">docs/benchmarks/value-v2-2026-11-10-fix/report.md</a>
+          <a href="assets/bench/sources/docs/benchmarks/value-v2-2026-11-10-fix/replay.json">docs/benchmarks/value-v2-2026-11-10-fix/replay.json</a>
+          <a href="assets/bench/sources/docs/benchmarks/value-v2-2026-11-09/results.json">docs/benchmarks/value-v2-2026-11-09/results.json</a>
+        </div>
+        <p class="note">The development tests (Gate 1, <code>lean-ai</code>, <code>lean-x</code>, the held-out pilot) and the $0 probes are not published with raw data. Their numbers here come from their own reports.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <span>Olivium Harness / Apache 2.0 / page built 2026-11-14 from measured values</span>
+  <nav aria-label="Footer">
+    <a href="index.html">Overview</a>
+    <a href="benchmark.html">Benchmark</a>
+    <a href="https://github.com/oudaykhaled/olivium-harness">Repository</a>
+  </nav>
+</footer>
+
+</div>
+</body>
+</html>

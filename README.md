@@ -1,7 +1,9 @@
-# Olivium Harness website (published build)
+# Olivium Harness website
 
-This repository is the auto-published build of the Olivium Harness landing page, served at https://oudaykhaled.github.io/olivium-harness-site/.
+This repository holds the Olivium Harness website: the landing page (`index.html`), the benchmark page (`benchmark.html`) and the value page (`value.html`). It is served at https://oudaykhaled.github.io/olivium-harness-site/.
 
-It is deployed by CI from a private source repository. Do not edit files here by hand; every change on the source's `main` branch overwrites them.
+GitHub Pages deploys it from the `main` branch, repository root. There is no build step: the files here are the site.
+
+The product source code is at https://github.com/oudaykhaled/olivium-harness. Files under `assets/bench/sources/` are copies of benchmark files from that repository; see `assets/bench/sources/README.txt`.
 
 No license is granted. All rights reserved.

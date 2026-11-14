@@ -1,0 +1,2065 @@
+{
+  "generated": "2026-11-10",
+  "note": "Every value is taken from the published benchmark files named in each block's source string. Text fields are for display; numeric fields are rounded to the precision the sources print.",
+  "statement": "On 8 real bug-fix tasks, accuracy was the same with and without the harness, and after a fix to its permission settings cost showed no measurable difference either. A first run found it cost more because its own permission settings refused 35 ordinary calls; after a fix, cost per solved task is $0.0935 against $0.0917 for /init and $0.0827 for no instruction file; the paired per-task difference shows no clear difference against either. Accuracy was equal.",
+  "headline": {
+    "source": "docs/benchmarks/value-v2-2026-11-09/results.json (arms, permission_and_hooks); docs/benchmarks/value-v2-2026-11-10-fix/results.json (arms.olivium, permission_and_hooks.olivium); docs/benchmarks/value-v2-2026-11-10-fix/report.md table \"Before and after the fix\" (medians, means and turns, recomputed here from runs/trials.jsonl of both directories)",
+    "note": "24 runs per setup (8 tasks x 3 repeats). The two baseline setups were run once, in the first run; the after-fix column re-ran the Olivium setup only. Tokens are input + output + cache write + cache read.",
+    "setups": [
+      {
+        "id": "none",
+        "label": "No instruction file",
+        "colour": "grey",
+        "runs": 24,
+        "solved": 15,
+        "solved_text": "15/24",
+        "total_cost_usd": 1.2403,
+        "total_cost_text": "$1.2403",
+        "cost_per_solved_usd": 0.0827,
+        "cost_per_solved_text": "$0.0827",
+        "median_cost_per_run_usd": 0.049,
+        "median_cost_per_run_text": "$0.0490",
+        "median_tokens_per_run": 110307,
+        "median_tokens_per_run_text": "110,307",
+        "mean_tokens_per_run": 114857,
+        "mean_tokens_per_run_text": "114,857",
+        "mean_turns": 5.75,
+        "refused_calls": 0,
+        "runs_with_refusal": 0,
+        "stop_hook_blocks": 0
+      },
+      {
+        "id": "generic",
+        "label": "Claude Code /init",
+        "colour": "grey",
+        "runs": 24,
+        "solved": 15,
+        "solved_text": "15/24",
+        "total_cost_usd": 1.375,
+        "total_cost_text": "$1.3750",
+        "cost_per_solved_usd": 0.0917,
+        "cost_per_solved_text": "$0.0917",
+        "median_cost_per_run_usd": 0.0559,
+        "median_cost_per_run_text": "$0.0559",
+        "median_tokens_per_run": 135362,
+        "median_tokens_per_run_text": "135,362",
+        "mean_tokens_per_run": 125050,
+        "mean_tokens_per_run_text": "125,050",
+        "mean_turns": 5.79,
+        "refused_calls": 0,
+        "runs_with_refusal": 0,
+        "stop_hook_blocks": 0
+      },
+      {
+        "id": "olivium_first",
+        "label": "Olivium, first run",
+        "colour": "purple",
+        "runs": 24,
+        "solved": 15,
+        "solved_text": "15/24",
+        "total_cost_usd": 1.7183,
+        "total_cost_text": "$1.7183",
+        "cost_per_solved_usd": 0.1146,
+        "cost_per_solved_text": "$0.1146",
+        "median_cost_per_run_usd": 0.0662,
+        "median_cost_per_run_text": "$0.0662",
+        "median_tokens_per_run": 143260,
+        "median_tokens_per_run_text": "143,260",
+        "mean_tokens_per_run": 175592,
+        "mean_tokens_per_run_text": "175,592",
+        "mean_turns": 7.88,
+        "refused_calls": 35,
+        "runs_with_refusal": 14,
+        "stop_hook_blocks": 0
+      },
+      {
+        "id": "olivium_after_fix",
+        "label": "Olivium, after fix",
+        "colour": "green",
+        "runs": 24,
+        "solved": 15,
+        "solved_text": "15/24",
+        "total_cost_usd": 1.4019,
+        "total_cost_text": "$1.4019",
+        "cost_per_solved_usd": 0.0935,
+        "cost_per_solved_text": "$0.0935",
+        "median_cost_per_run_usd": 0.0528,
+        "median_cost_per_run_text": "$0.0528",
+        "median_tokens_per_run": 134610,
+        "median_tokens_per_run_text": "134,610",
+        "mean_tokens_per_run": 136294,
+        "mean_tokens_per_run_text": "136,294",
+        "mean_turns": 6.33,
+        "refused_calls": 4,
+        "runs_with_refusal": 4,
+        "stop_hook_blocks": 0
+      }
+    ]
+  },
+  "paired": {
+    "source": "docs/benchmarks/value-v2-2026-11-09/results.json and docs/benchmarks/value-v2-2026-11-10-fix/results.json (comparisons.olivium_minus_none|generic, held_out.comparisons)",
+    "note": "Olivium minus baseline, cost per run. Median of per-task differences with a 95% percentile bootstrap interval. An interval that includes zero is reported as no clear difference.",
+    "cost": [
+      {
+        "run": "first",
+        "setup": "olivium_first",
+        "scope": "all8",
+        "tasks": 8,
+        "baseline": "none",
+        "baseline_label": "No instruction file",
+        "median_usd": 0.0105,
+        "low_usd": 0.0029,
+        "high_usd": 0.0404,
+        "median_text": "+$0.0105",
+        "low_text": "+$0.0029",
+        "high_text": "+$0.0404",
+        "interval_includes_zero": false,
+        "reading": "olivium cost more per run"
+      },
+      {
+        "run": "first",
+        "setup": "olivium_first",
+        "scope": "all8",
+        "tasks": 8,
+        "baseline": "generic",
+        "baseline_label": "Claude Code /init",
+        "median_usd": 0.004,
+        "low_usd": 0.0012,
+        "high_usd": 0.0386,
+        "median_text": "+$0.0040",
+        "low_text": "+$0.0012",
+        "high_text": "+$0.0386",
+        "interval_includes_zero": false,
+        "reading": "olivium cost more per run"
+      },
+      {
+        "run": "first",
+        "setup": "olivium_first",
+        "scope": "held_out3",
+        "tasks": 3,
+        "baseline": "none",
+        "baseline_label": "No instruction file",
+        "median_usd": 0.0053,
+        "low_usd": 0.0029,
+        "high_usd": 0.011,
+        "median_text": "+$0.0053",
+        "low_text": "+$0.0029",
+        "high_text": "+$0.0110",
+        "interval_includes_zero": false,
+        "reading": "olivium cost more per run"
+      },
+      {
+        "run": "first",
+        "setup": "olivium_first",
+        "scope": "held_out3",
+        "tasks": 3,
+        "baseline": "generic",
+        "baseline_label": "Claude Code /init",
+        "median_usd": 0.0032,
+        "low_usd": 0.0012,
+        "high_usd": 0.0045,
+        "median_text": "+$0.0032",
+        "low_text": "+$0.0012",
+        "high_text": "+$0.0045",
+        "interval_includes_zero": false,
+        "reading": "olivium cost more per run"
+      },
+      {
+        "run": "after_fix",
+        "setup": "olivium_after_fix",
+        "scope": "all8",
+        "tasks": 8,
+        "baseline": "none",
+        "baseline_label": "No instruction file",
+        "median_usd": 0.0016,
+        "low_usd": -0.0031,
+        "high_usd": 0.0158,
+        "median_text": "+$0.0016",
+        "low_text": "-$0.0031",
+        "high_text": "+$0.0158",
+        "interval_includes_zero": true,
+        "reading": "no clear difference"
+      },
+      {
+        "run": "after_fix",
+        "setup": "olivium_after_fix",
+        "scope": "all8",
+        "tasks": 8,
+        "baseline": "generic",
+        "baseline_label": "Claude Code /init",
+        "median_usd": -0.0032,
+        "low_usd": -0.0098,
+        "high_usd": 0.0094,
+        "median_text": "-$0.0032",
+        "low_text": "-$0.0098",
+        "high_text": "+$0.0094",
+        "interval_includes_zero": true,
+        "reading": "no clear difference"
+      },
+      {
+        "run": "after_fix",
+        "setup": "olivium_after_fix",
+        "scope": "held_out3",
+        "tasks": 3,
+        "baseline": "none",
+        "baseline_label": "No instruction file",
+        "median_usd": 0.0078,
+        "low_usd": -0.0011,
+        "high_usd": 0.0158,
+        "median_text": "+$0.0078",
+        "low_text": "-$0.0011",
+        "high_text": "+$0.0158",
+        "interval_includes_zero": true,
+        "reading": "no clear difference"
+      },
+      {
+        "run": "after_fix",
+        "setup": "olivium_after_fix",
+        "scope": "held_out3",
+        "tasks": 3,
+        "baseline": "generic",
+        "baseline_label": "Claude Code /init",
+        "median_usd": 0.0061,
+        "low_usd": -0.0033,
+        "high_usd": 0.0094,
+        "median_text": "+$0.0061",
+        "low_text": "-$0.0033",
+        "high_text": "+$0.0094",
+        "interval_includes_zero": true,
+        "reading": "no clear difference"
+      }
+    ],
+    "other_metrics": [
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "wasted_reads",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "+0.67"
+      },
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "turns_before_first_gold_edit",
+        "tasks": 7,
+        "median": "+0.67",
+        "low": "0",
+        "high": "+1.33"
+      },
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "tool_calls_before_first_gold_edit",
+        "tasks": 7,
+        "median": "+0.67",
+        "low": "0",
+        "high": "+1.67"
+      },
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "solved",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "p2p_regressions",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "lint_ok",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "wasted_reads",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "+1.17"
+      },
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "turns_before_first_gold_edit",
+        "tasks": 8,
+        "median": "+0.5",
+        "low": "0",
+        "high": "+1.33"
+      },
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "tool_calls_before_first_gold_edit",
+        "tasks": 8,
+        "median": "+0.5",
+        "low": "0",
+        "high": "+2.17"
+      },
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "solved",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "p2p_regressions",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "first",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "lint_ok",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "wasted_reads",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "+0.67"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "turns_before_first_gold_edit",
+        "tasks": 3,
+        "median": "0",
+        "low": "-1",
+        "high": "+0.67"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "tool_calls_before_first_gold_edit",
+        "tasks": 3,
+        "median": "0",
+        "low": "-1",
+        "high": "+0.67"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "solved",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "p2p_regressions",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "lint_ok",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "wasted_reads",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "+1.33"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "turns_before_first_gold_edit",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "+0.33"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "tool_calls_before_first_gold_edit",
+        "tasks": 3,
+        "median": "+0.33",
+        "low": "0",
+        "high": "+0.33"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "solved",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "p2p_regressions",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "first",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "lint_ok",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "wasted_reads",
+        "tasks": 8,
+        "median": "0",
+        "low": "-0.33",
+        "high": "+0.33"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "turns_before_first_gold_edit",
+        "tasks": 7,
+        "median": "0",
+        "low": "-0.5",
+        "high": "+0.33"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "tool_calls_before_first_gold_edit",
+        "tasks": 7,
+        "median": "0",
+        "low": "-0.5",
+        "high": "+0.17"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "solved",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "p2p_regressions",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "none",
+        "metric": "lint_ok",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "wasted_reads",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "+0.33"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "turns_before_first_gold_edit",
+        "tasks": 8,
+        "median": "0",
+        "low": "-0.33",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "tool_calls_before_first_gold_edit",
+        "tasks": 8,
+        "median": "-0.08",
+        "low": "-0.33",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "solved",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "p2p_regressions",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "all8",
+        "baseline": "generic",
+        "metric": "lint_ok",
+        "tasks": 8,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "wasted_reads",
+        "tasks": 3,
+        "median": "0",
+        "low": "-0.33",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "turns_before_first_gold_edit",
+        "tasks": 3,
+        "median": "-0.5",
+        "low": "-1",
+        "high": "+0.33"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "tool_calls_before_first_gold_edit",
+        "tasks": 3,
+        "median": "-0.5",
+        "low": "-1",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "solved",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "p2p_regressions",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "none",
+        "metric": "lint_ok",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "wasted_reads",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "+0.33"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "turns_before_first_gold_edit",
+        "tasks": 3,
+        "median": "-0.17",
+        "low": "-0.33",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "tool_calls_before_first_gold_edit",
+        "tasks": 3,
+        "median": "-0.17",
+        "low": "-0.33",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "solved",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "p2p_regressions",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      },
+      {
+        "run": "after_fix",
+        "scope": "held_out3",
+        "baseline": "generic",
+        "metric": "lint_ok",
+        "tasks": 3,
+        "median": "0",
+        "low": "0",
+        "high": "0"
+      }
+    ],
+    "other_metrics_note": "Same statistic for the context and accuracy measures; turns and tool calls before the first edit to a file the real fix changed use 7 of the 8 tasks against no instruction file (see the tasks field)."
+  },
+  "per_task": {
+    "source": "docs/benchmarks/value-v2-2026-11-09/results.json and docs/benchmarks/value-v2-2026-11-10-fix/results.json (per_task.*.means, solved); refused calls and mean turns summed or averaged over the 3 published trial rows per task and setup in runs/trials.jsonl; task references from bench/value/corpus/manifest-v2.json",
+    "note": "Mean over 3 repeats. The repository publishes task references only (URLs, commit SHAs), no issue or fix text, so description is null. Each task was solved by all 3 of its runs or by none, in every setup: 5 always, 3 never.",
+    "tasks": [
+      {
+        "id": "pallets-click-3858",
+        "repository": "pallets/click",
+        "language": "python",
+        "license": "BSD-3-Clause",
+        "held_out": false,
+        "base_commit": "7944461a80b7",
+        "pr_url": "https://github.com/pallets/click/pull/3858",
+        "issue_url": "https://github.com/pallets/click/issues/3822",
+        "merged_at": "2026-09-08T19:48:10Z",
+        "fail_to_pass_tests": 1,
+        "pass_to_pass_tests": 2059,
+        "files_changed_by_real_fix": [
+          "CHANGES.md",
+          "src/click/types.py"
+        ],
+        "description": null,
+        "outcome": "solved by all 3 runs in every setup",
+        "setups": {
+          "none": {
+            "mean_cost_per_run_usd": 0.0668,
+            "mean_cost_per_run_text": "$0.0668",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.0,
+            "mean_tokens": 133198
+          },
+          "generic": {
+            "mean_cost_per_run_usd": 0.0717,
+            "mean_cost_per_run_text": "$0.0717",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.33,
+            "mean_tokens": 149523
+          },
+          "olivium_first": {
+            "mean_cost_per_run_usd": 0.1359,
+            "mean_cost_per_run_text": "$0.1359",
+            "solved_of_3": 3,
+            "refused_calls": 13,
+            "runs_with_refusal": 3,
+            "mean_turns": 14.0,
+            "mean_tokens": 359455
+          },
+          "olivium_after_fix": {
+            "mean_cost_per_run_usd": 0.0677,
+            "mean_cost_per_run_text": "$0.0677",
+            "solved_of_3": 3,
+            "refused_calls": 3,
+            "runs_with_refusal": 3,
+            "mean_turns": 7.33,
+            "mean_tokens": 169332
+          }
+        },
+        "cost_difference_text": {
+          "first_vs_none": "+$0.0690",
+          "first_vs_generic": "+$0.0642",
+          "after_fix_vs_none": "+$0.0009",
+          "after_fix_vs_generic": "-$0.0039"
+        },
+        "harness": {
+          "bytes_first_run": 68376,
+          "bytes_after_fix": 69532,
+          "hooks": 3,
+          "rules": 2,
+          "init_cost_text": "$0.0472",
+          "init_claude_md_bytes": 3871
+        }
+      },
+      {
+        "id": "pallets-flask-6096",
+        "repository": "pallets/flask",
+        "language": "python",
+        "license": "BSD-3-Clause",
+        "held_out": false,
+        "base_commit": "514fc6b3e840",
+        "pr_url": "https://github.com/pallets/flask/pull/6096",
+        "issue_url": "https://github.com/pallets/flask/issues/6093",
+        "merged_at": "2026-08-11T19:48:41Z",
+        "fail_to_pass_tests": 2,
+        "pass_to_pass_tests": 491,
+        "files_changed_by_real_fix": [
+          "src/flask/app.py",
+          "src/flask/testing.py"
+        ],
+        "description": null,
+        "outcome": "solved by all 3 runs in every setup",
+        "setups": {
+          "none": {
+            "mean_cost_per_run_usd": 0.0437,
+            "mean_cost_per_run_text": "$0.0437",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.33,
+            "mean_tokens": 115406
+          },
+          "generic": {
+            "mean_cost_per_run_usd": 0.049,
+            "mean_cost_per_run_text": "$0.0490",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.33,
+            "mean_tokens": 128202
+          },
+          "olivium_first": {
+            "mean_cost_per_run_usd": 0.0636,
+            "mean_cost_per_run_text": "$0.0636",
+            "solved_of_3": 3,
+            "refused_calls": 5,
+            "runs_with_refusal": 3,
+            "mean_turns": 8.67,
+            "mean_tokens": 173018
+          },
+          "olivium_after_fix": {
+            "mean_cost_per_run_usd": 0.0459,
+            "mean_cost_per_run_text": "$0.0459",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 7.33,
+            "mean_tokens": 143189
+          }
+        },
+        "cost_difference_text": {
+          "first_vs_none": "+$0.0199",
+          "first_vs_generic": "+$0.0146",
+          "after_fix_vs_none": "+$0.0022",
+          "after_fix_vs_generic": "-$0.0030"
+        },
+        "harness": {
+          "bytes_first_run": 67442,
+          "bytes_after_fix": 68598,
+          "hooks": 3,
+          "rules": 1,
+          "init_cost_text": "$0.0536",
+          "init_claude_md_bytes": 2809
+        }
+      },
+      {
+        "id": "python-attrs-attrs-1593",
+        "repository": "python-attrs/attrs",
+        "language": "python",
+        "license": "MIT",
+        "held_out": false,
+        "base_commit": "6851ab593cd2",
+        "pr_url": "https://github.com/python-attrs/attrs/pull/1593",
+        "issue_url": "https://github.com/python-attrs/attrs/issues/1575",
+        "merged_at": "2026-07-31T13:30:57Z",
+        "fail_to_pass_tests": 1,
+        "pass_to_pass_tests": 1384,
+        "files_changed_by_real_fix": [
+          "changelog.d/1593.change.md",
+          "src/attr/_make.py"
+        ],
+        "description": null,
+        "outcome": "solved by all 3 runs in every setup",
+        "setups": {
+          "none": {
+            "mean_cost_per_run_usd": 0.0397,
+            "mean_cost_per_run_text": "$0.0397",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.0,
+            "mean_tokens": 110511
+          },
+          "generic": {
+            "mean_cost_per_run_usd": 0.0416,
+            "mean_cost_per_run_text": "$0.0416",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 5.0,
+            "mean_tokens": 99783
+          },
+          "olivium_first": {
+            "mean_cost_per_run_usd": 0.0801,
+            "mean_cost_per_run_text": "$0.0801",
+            "solved_of_3": 3,
+            "refused_calls": 10,
+            "runs_with_refusal": 3,
+            "mean_turns": 11.33,
+            "mean_tokens": 262004
+          },
+          "olivium_after_fix": {
+            "mean_cost_per_run_usd": 0.0743,
+            "mean_cost_per_run_text": "$0.0743",
+            "solved_of_3": 3,
+            "refused_calls": 1,
+            "runs_with_refusal": 1,
+            "mean_turns": 8.0,
+            "mean_tokens": 178841
+          }
+        },
+        "cost_difference_text": {
+          "first_vs_none": "+$0.0404",
+          "first_vs_generic": "+$0.0386",
+          "after_fix_vs_none": "+$0.0347",
+          "after_fix_vs_generic": "+$0.0328"
+        },
+        "harness": {
+          "bytes_first_run": 73592,
+          "bytes_after_fix": 74748,
+          "hooks": 3,
+          "rules": 8,
+          "init_cost_text": "$0.0774",
+          "init_claude_md_bytes": 3863
+        }
+      },
+      {
+        "id": "expressjs-express-7366",
+        "repository": "expressjs/express",
+        "language": "javascript",
+        "license": "MIT",
+        "held_out": false,
+        "base_commit": "ba006766fb96",
+        "pr_url": "https://github.com/expressjs/express/pull/7366",
+        "issue_url": "https://github.com/expressjs/express/issues/7365",
+        "merged_at": "2026-07-12T18:22:01Z",
+        "fail_to_pass_tests": 1,
+        "pass_to_pass_tests": 1251,
+        "files_changed_by_real_fix": [
+          "History.md",
+          "lib/request.js"
+        ],
+        "description": null,
+        "outcome": "solved by all 3 runs in every setup",
+        "setups": {
+          "none": {
+            "mean_cost_per_run_usd": 0.0354,
+            "mean_cost_per_run_text": "$0.0354",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.33,
+            "mean_tokens": 117841
+          },
+          "generic": {
+            "mean_cost_per_run_usd": 0.0515,
+            "mean_cost_per_run_text": "$0.0515",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.33,
+            "mean_tokens": 127930
+          },
+          "olivium_first": {
+            "mean_cost_per_run_usd": 0.0361,
+            "mean_cost_per_run_text": "$0.0361",
+            "solved_of_3": 3,
+            "refused_calls": 2,
+            "runs_with_refusal": 2,
+            "mean_turns": 6.0,
+            "mean_tokens": 113139
+          },
+          "olivium_after_fix": {
+            "mean_cost_per_run_usd": 0.0323,
+            "mean_cost_per_run_text": "$0.0323",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 5.33,
+            "mean_tokens": 100691
+          }
+        },
+        "cost_difference_text": {
+          "first_vs_none": "+$0.0007",
+          "first_vs_generic": "-$0.0154",
+          "after_fix_vs_none": "-$0.0031",
+          "after_fix_vs_generic": "-$0.0192"
+        },
+        "harness": {
+          "bytes_first_run": 65159,
+          "bytes_after_fix": 66315,
+          "hooks": 2,
+          "rules": 0,
+          "init_cost_text": "$0.0459",
+          "init_claude_md_bytes": 2667
+        }
+      },
+      {
+        "id": "pallets-click-3769",
+        "repository": "pallets/click",
+        "language": "python",
+        "license": "BSD-3-Clause",
+        "held_out": false,
+        "base_commit": "8b44edfff7d9",
+        "pr_url": "https://github.com/pallets/click/pull/3769",
+        "issue_url": "https://github.com/pallets/click/issues/3571",
+        "merged_at": "2026-08-15T17:56:58Z",
+        "fail_to_pass_tests": 6,
+        "pass_to_pass_tests": 1963,
+        "files_changed_by_real_fix": [
+          "CHANGES.md",
+          "src/click/_termui_impl.py"
+        ],
+        "description": null,
+        "outcome": "solved by no run in any setup",
+        "setups": {
+          "none": {
+            "mean_cost_per_run_usd": 0.0306,
+            "mean_cost_per_run_text": "$0.0306",
+            "solved_of_3": 0,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 4.0,
+            "mean_tokens": 72538
+          },
+          "generic": {
+            "mean_cost_per_run_usd": 0.0372,
+            "mean_cost_per_run_text": "$0.0372",
+            "solved_of_3": 0,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 5.33,
+            "mean_tokens": 107293
+          },
+          "olivium_first": {
+            "mean_cost_per_run_usd": 0.0407,
+            "mean_cost_per_run_text": "$0.0407",
+            "solved_of_3": 0,
+            "refused_calls": 4,
+            "runs_with_refusal": 2,
+            "mean_turns": 5.67,
+            "mean_tokens": 110324
+          },
+          "olivium_after_fix": {
+            "mean_cost_per_run_usd": 0.0274,
+            "mean_cost_per_run_text": "$0.0274",
+            "solved_of_3": 0,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 4.0,
+            "mean_tokens": 75951
+          }
+        },
+        "cost_difference_text": {
+          "first_vs_none": "+$0.0100",
+          "first_vs_generic": "+$0.0035",
+          "after_fix_vs_none": "-$0.0033",
+          "after_fix_vs_generic": "-$0.0098"
+        },
+        "harness": {
+          "bytes_first_run": 68310,
+          "bytes_after_fix": 69466,
+          "hooks": 3,
+          "rules": 2,
+          "init_cost_text": "$0.0572",
+          "init_claude_md_bytes": 3761
+        }
+      },
+      {
+        "id": "pallets-werkzeug-3298",
+        "repository": "pallets/werkzeug",
+        "language": "python",
+        "license": "BSD-3-Clause",
+        "held_out": true,
+        "base_commit": "25663ddc2958",
+        "pr_url": "https://github.com/pallets/werkzeug/pull/3298",
+        "issue_url": "https://github.com/pallets/werkzeug/issues/3294",
+        "merged_at": "2026-09-25T04:30:12Z",
+        "fail_to_pass_tests": 1,
+        "pass_to_pass_tests": 1031,
+        "files_changed_by_real_fix": [
+          "CHANGES.rst",
+          "src/werkzeug/middleware/proxy_fix.py"
+        ],
+        "description": null,
+        "outcome": "solved by all 3 runs in every setup",
+        "setups": {
+          "none": {
+            "mean_cost_per_run_usd": 0.057,
+            "mean_cost_per_run_text": "$0.0570",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.0,
+            "mean_tokens": 124957
+          },
+          "generic": {
+            "mean_cost_per_run_usd": 0.0592,
+            "mean_cost_per_run_text": "$0.0592",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 4.67,
+            "mean_tokens": 103786
+          },
+          "olivium_first": {
+            "mean_cost_per_run_usd": 0.0623,
+            "mean_cost_per_run_text": "$0.0623",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 5.33,
+            "mean_tokens": 116460
+          },
+          "olivium_after_fix": {
+            "mean_cost_per_run_usd": 0.0559,
+            "mean_cost_per_run_text": "$0.0559",
+            "solved_of_3": 3,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 5.33,
+            "mean_tokens": 115159
+          }
+        },
+        "cost_difference_text": {
+          "first_vs_none": "+$0.0053",
+          "first_vs_generic": "+$0.0032",
+          "after_fix_vs_none": "-$0.0011",
+          "after_fix_vs_generic": "-$0.0033"
+        },
+        "harness": {
+          "bytes_first_run": 68464,
+          "bytes_after_fix": 69620,
+          "hooks": 3,
+          "rules": 2,
+          "init_cost_text": "$0.0544",
+          "init_claude_md_bytes": 3638
+        }
+      },
+      {
+        "id": "pallets-werkzeug-3273",
+        "repository": "pallets/werkzeug",
+        "language": "python",
+        "license": "BSD-3-Clause",
+        "held_out": true,
+        "base_commit": "a33190bffb7f",
+        "pr_url": "https://github.com/pallets/werkzeug/pull/3273",
+        "issue_url": "https://github.com/pallets/werkzeug/issues/3271",
+        "merged_at": "2026-09-13T16:07:15Z",
+        "fail_to_pass_tests": 1,
+        "pass_to_pass_tests": 1023,
+        "files_changed_by_real_fix": [
+          "CHANGES.rst",
+          "src/werkzeug/sansio/request.py",
+          "src/werkzeug/user_agent.py"
+        ],
+        "description": null,
+        "outcome": "solved by no run in any setup",
+        "setups": {
+          "none": {
+            "mean_cost_per_run_usd": 0.0707,
+            "mean_cost_per_run_text": "$0.0707",
+            "solved_of_3": 0,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 5.33,
+            "mean_tokens": 113362
+          },
+          "generic": {
+            "mean_cost_per_run_usd": 0.0771,
+            "mean_cost_per_run_text": "$0.0771",
+            "solved_of_3": 0,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.0,
+            "mean_tokens": 135542
+          },
+          "olivium_first": {
+            "mean_cost_per_run_usd": 0.0817,
+            "mean_cost_per_run_text": "$0.0817",
+            "solved_of_3": 0,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 5.67,
+            "mean_tokens": 126660
+          },
+          "olivium_after_fix": {
+            "mean_cost_per_run_usd": 0.0865,
+            "mean_cost_per_run_text": "$0.0865",
+            "solved_of_3": 0,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.33,
+            "mean_tokens": 142257
+          }
+        },
+        "cost_difference_text": {
+          "first_vs_none": "+$0.0110",
+          "first_vs_generic": "+$0.0045",
+          "after_fix_vs_none": "+$0.0158",
+          "after_fix_vs_generic": "+$0.0094"
+        },
+        "harness": {
+          "bytes_first_run": 67680,
+          "bytes_after_fix": 68836,
+          "hooks": 3,
+          "rules": 1,
+          "init_cost_text": "$0.0659",
+          "init_claude_md_bytes": 3180
+        }
+      },
+      {
+        "id": "pallets-werkzeug-3266",
+        "repository": "pallets/werkzeug",
+        "language": "python",
+        "license": "BSD-3-Clause",
+        "held_out": true,
+        "base_commit": "0005c79e09ba",
+        "pr_url": "https://github.com/pallets/werkzeug/pull/3266",
+        "issue_url": "https://github.com/pallets/werkzeug/issues/3247",
+        "merged_at": "2026-09-06T15:19:46Z",
+        "fail_to_pass_tests": 30,
+        "pass_to_pass_tests": 1014,
+        "files_changed_by_real_fix": [
+          "CHANGES.rst",
+          "src/werkzeug/wrappers/response.py"
+        ],
+        "description": null,
+        "outcome": "solved by no run in any setup",
+        "setups": {
+          "none": {
+            "mean_cost_per_run_usd": 0.0695,
+            "mean_cost_per_run_text": "$0.0695",
+            "solved_of_3": 0,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.0,
+            "mean_tokens": 131040
+          },
+          "generic": {
+            "mean_cost_per_run_usd": 0.0712,
+            "mean_cost_per_run_text": "$0.0712",
+            "solved_of_3": 0,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 6.33,
+            "mean_tokens": 148338
+          },
+          "olivium_first": {
+            "mean_cost_per_run_usd": 0.0724,
+            "mean_cost_per_run_text": "$0.0724",
+            "solved_of_3": 0,
+            "refused_calls": 1,
+            "runs_with_refusal": 1,
+            "mean_turns": 6.33,
+            "mean_tokens": 143676
+          },
+          "olivium_after_fix": {
+            "mean_cost_per_run_usd": 0.0772,
+            "mean_cost_per_run_text": "$0.0772",
+            "solved_of_3": 0,
+            "refused_calls": 0,
+            "runs_with_refusal": 0,
+            "mean_turns": 7.0,
+            "mean_tokens": 164932
+          }
+        },
+        "cost_difference_text": {
+          "first_vs_none": "+$0.0029",
+          "first_vs_generic": "+$0.0012",
+          "after_fix_vs_none": "+$0.0078",
+          "after_fix_vs_generic": "+$0.0061"
+        },
+        "harness": {
+          "bytes_first_run": 67680,
+          "bytes_after_fix": 68836,
+          "hooks": 3,
+          "rules": 1,
+          "init_cost_text": "$0.0542",
+          "init_claude_md_bytes": 3452
+        }
+      }
+    ]
+  },
+  "replay": {
+    "source": "docs/benchmarks/value-v2-2026-11-10-fix/replay.json (replay_of_refused_runs.totals, pretooluse_events_in_fixed_replay, deny_rules_without_guard); docs/benchmarks/value-v2-2026-11-10-fix/report.md \"Proof of the fix at $0\"",
+    "what": "Every main-session tool call of the 14 first-run Olivium runs that had a refusal, replayed in original order through real Claude Code 2.1.311 in each task's agent image with the mock model.",
+    "cost_text": "$0",
+    "calls_replayed": 150,
+    "runs_replayed": 14,
+    "steps": [
+      {
+        "id": "paid_run",
+        "label": "Paid first run",
+        "detail": "The 14 runs as they happened, with the first-run export.",
+        "refused": 35,
+        "colour": "purple"
+      },
+      {
+        "id": "old_export",
+        "label": "Replay, old export",
+        "detail": "Same refusals as the paid run: the replay reproduces it.",
+        "refused": 35,
+        "colour": "purple"
+      },
+      {
+        "id": "old_export_plus_bash_allow",
+        "label": "Old export plus a plain Bash allow",
+        "detail": "What is left is the guard hook's 9 refusals.",
+        "refused": 9,
+        "colour": "grey"
+      },
+      {
+        "id": "fixed_export",
+        "label": "Fixed export",
+        "detail": "Both remaining refusals are deliberate.",
+        "refused": 2,
+        "colour": "green"
+      }
+    ],
+    "fixed_export_remaining": [
+      {
+        "command": "ls ~/.local/share/uv/python",
+        "refused_by": "guard",
+        "reason": "names a path outside the project: ~/",
+        "why_kept": "the home directory stays outside"
+      },
+      {
+        "command": "rm -rf scratch_tmp",
+        "refused_by": "guard",
+        "reason": "runs a denied command: rm -rf",
+        "why_kept": "recursive deletes stay refused"
+      }
+    ],
+    "guard_runs_in_fixed_replay": {
+      "pretooluse_events": 142,
+      "nonzero_exits": 0,
+      "warnings": 0,
+      "approvals": 0
+    },
+    "deny_rules_without_guard": {
+      "what": "Guard file deleted from the fixed pallets-click-3858 export (the hook then lets Claude Code's rules decide alone); synthetic commands; plain Bash allowed.",
+      "permission_mode": "default",
+      "refused": 9,
+      "of_dangerous_commands": 9,
+      "calls": 11,
+      "refused_commands": [
+        "rm -rf .rules-proof",
+        "rm -r .rules-proof",
+        "curl -s http://meter:8080/healthz",
+        "git push origin HEAD",
+        "wget -q http://meter:8080/",
+        "git commit -m x",
+        "sudo ls",
+        "cat .env",
+        "git reset --hard HEAD"
+      ],
+      "ran_commands": [
+        "mkdir -p .rules-proof",
+        "ls"
+      ]
+    }
+  },
+  "refusals": {
+    "source": "docs/benchmarks/value-v2-2026-11-09/supplement.json (full_run.per_arm.olivium, full_run.refusal_classes.olivium, full_run.olivium_runs_by_refusal); docs/benchmarks/value-v2-2026-11-09/report.md \"Refusal classes in the olivium arm\"; bench/value/PROTOCOL-v2.md change log \"2026-11-10, after the scored run\"; docs/benchmarks/value-v2-2026-11-10-fix/results.json permission_and_hooks; docs/benchmarks/value-v2-2026-11-10-fix/report.md bullet \"The 4 refusals left\"",
+    "first_run": {
+      "total": 35,
+      "runs_with_refusal": 14,
+      "of_runs": 24,
+      "tool_calls": 199,
+      "by": [
+        {
+          "id": "claude_code_ask",
+          "label": "Claude Code asked about a command no allow rule matched; an unattended session refuses",
+          "calls": 26
+        },
+        {
+          "id": "guard",
+          "label": "Refused by the guard hook",
+          "calls": 9
+        },
+        {
+          "id": "deny_rule",
+          "label": "Refused by a deny rule",
+          "calls": 0
+        }
+      ],
+      "file_tool_refusals": 0,
+      "not_listed_in_docs": 4,
+      "ask_examples": [
+        "cd dir && git ...",
+        "a here-document fed to python -",
+        "sed -i with escapes",
+        "a cd followed by a write"
+      ],
+      "guard_breakdown": [
+        {
+          "what": "scratch files under /tmp",
+          "calls": 7
+        },
+        {
+          "what": "ls ~/.local/share/uv/python",
+          "calls": 1
+        },
+        {
+          "what": "rm -rf scratch_tmp",
+          "calls": 1
+        }
+      ],
+      "classes": [
+        {
+          "refused_by": "claude_code_ask",
+          "class": "$( ... ) nested command",
+          "calls": 1,
+          "docs_section": "What still asks ($( ... ))",
+          "listed_in_docs": true
+        },
+        {
+          "refused_by": "claude_code_ask",
+          "class": "'..' path after a cd (resolved outside the working directory)",
+          "calls": 2,
+          "docs_section": "What still asks (a .. path after a cd)",
+          "listed_in_docs": true
+        },
+        {
+          "refused_by": "claude_code_ask",
+          "class": "backslash-escaped whitespace",
+          "calls": 6,
+          "docs_section": "What still asks (backslash-escaped whitespace)",
+          "listed_in_docs": true
+        },
+        {
+          "refused_by": "claude_code_ask",
+          "class": "cd before a git command",
+          "calls": 3,
+          "docs_section": "not listed",
+          "listed_in_docs": false
+        },
+        {
+          "refused_by": "claude_code_ask",
+          "class": "cd followed by a write",
+          "calls": 4,
+          "docs_section": "What still asks (a cd followed by a write)",
+          "listed_in_docs": true
+        },
+        {
+          "refused_by": "claude_code_ask",
+          "class": "compound, '..' after a cd",
+          "calls": 3,
+          "docs_section": "What still asks (a .. path after a cd)",
+          "listed_in_docs": true
+        },
+        {
+          "refused_by": "claude_code_ask",
+          "class": "compound, a cd followed by a write",
+          "calls": 1,
+          "docs_section": "What still asks (a cd followed by a write)",
+          "listed_in_docs": true
+        },
+        {
+          "refused_by": "claude_code_ask",
+          "class": "compound, part outside the allow list (rmdir scratch_tmp)",
+          "calls": 1,
+          "docs_section": "What still asks (a command outside the allow list)",
+          "listed_in_docs": true
+        },
+        {
+          "refused_by": "claude_code_ask",
+          "class": "compound, part outside the allow list (uv python)",
+          "calls": 1,
+          "docs_section": "What still asks (a command outside the allow list)",
+          "listed_in_docs": true
+        },
+        {
+          "refused_by": "claude_code_ask",
+          "class": "outside the allow list (uv python)",
+          "calls": 1,
+          "docs_section": "What still asks (a command outside the allow list)",
+          "listed_in_docs": true
+        },
+        {
+          "refused_by": "claude_code_ask",
+          "class": "read-only git with -C",
+          "calls": 1,
+          "docs_section": "not listed (docs: read-only git runs by itself)",
+          "listed_in_docs": false
+        },
+        {
+          "refused_by": "claude_code_ask",
+          "class": "shell Claude Code could not parse",
+          "calls": 2,
+          "docs_section": "What still asks (shell Claude Code cannot check statically; this form not named)",
+          "listed_in_docs": true
+        },
+        {
+          "refused_by": "guard",
+          "class": "this call names a path outside the project",
+          "calls": 8,
+          "docs_section": "The guard hook",
+          "listed_in_docs": true
+        },
+        {
+          "refused_by": "guard",
+          "class": "this call runs a denied command",
+          "calls": 1,
+          "docs_section": "The guard hook",
+          "listed_in_docs": true
+        }
+      ],
+      "hook_runs": {
+        "pre_tool_use": 198,
+        "post_tool_use_format": 19,
+        "stop": 24,
+        "approvals": 0,
+        "stop_blocks": 0
+      },
+      "runs_with_a_refusal": {
+        "runs": 14,
+        "mean_cost_text": "$0.0778",
+        "mean_turns": 9.5,
+        "solved": 11
+      },
+      "runs_without_a_refusal": {
+        "runs": 10,
+        "mean_cost_text": "$0.0630",
+        "mean_turns": 5.6,
+        "solved": 4
+      },
+      "split_caution": "Descriptive only. Refusals are not assigned at random (they depend on the task and on what the model tried), so this split does not by itself show that refusals caused the cost difference."
+    },
+    "after_fix": {
+      "total": 4,
+      "runs_with_refusal": 4,
+      "of_runs": 24,
+      "all_by": "guard",
+      "deliberate": true,
+      "what": [
+        {
+          "what": "listing of ~/.local/share/uv/python",
+          "calls": 1
+        },
+        {
+          "what": "attempts to fetch mypy from the package registry (uvx mypy, uv run --with mypy)",
+          "calls": 3
+        }
+      ],
+      "runs": [
+        "pallets-click-3858.olivium.r1",
+        "pallets-click-3858.olivium.r2",
+        "pallets-click-3858.olivium.r3",
+        "python-attrs-attrs-1593.olivium.r3"
+      ],
+      "note": "The breakdown by command is stated in the after-fix report prose only; the published trial files hold counts per run, not the refused commands."
+    }
+  },
+  "pipeline": {
+    "source": "bench/value/PROTOCOL-v2.md and the bench/value/ files named per step; text from the facts sheet block how_it_works",
+    "steps": [
+      {
+        "n": 1,
+        "title": "Tasks by rule",
+        "long_title": "Task selection by rule",
+        "what_happens": "Tasks are merged pull requests from public MIT/BSD/Apache-2.0 repositories in Python or JavaScript/TypeScript, merged after 2026-06-30, newest first. The pull request must close a linked issue in the same repository with a prose description (at least 20 words, issue at most 365 days old), change at most 3 non-test files and 100 non-test lines, add or change at least one test file, and touch no dependency manifest. Each candidate is validated in Docker with no network: target tests fail at the base commit with the test patch applied and pass with the real fix, 3 of 3 times each, within 300 s. Result: the 5 pilot tasks (click x2, flask, attrs, express) plus 3 held-out tasks, all from pallets/werkzeug. The rule aimed for 5 held-out tasks and found 3 (the minimum allowed).",
+        "controls": "Nobody picks a task by hand. Every rejected candidate is recorded with its reason (1,877 rows in rejected-v2.jsonl). The manifest is frozen with a checksum (c8bde114...) before any paid run. The repository stores references only: URLs, commit SHAs and the SHA-256 of the issue text.",
+        "ref": "bench/value/corpus/manifest-v2.json",
+        "sources": [
+          "bench/value/PROTOCOL-v2.md (Tasks",
+          "change log 'held-out selection outcome')",
+          "bench/value/PROTOCOL.md (Task selection)",
+          "bench/value/corpus/manifest-v2.json (selection.rules)",
+          "bench/value/corpus/corpus_lib.py",
+          "bench/value/corpus/select_heldout.py"
+        ]
+      },
+      {
+        "n": 2,
+        "title": "Base commit only",
+        "long_title": "Materialization at the base commit",
+        "what_happens": "materialize.py rebuilds each task in a scratch directory from the manifest: issue.md (re-fetched and checked against issue_sha256), test.patch, gold.patch and repo/ (the tree at base_sha, the commit before the fix). For the generator, a fresh local git repository is built per task holding only base_sha and its ancestors: branch main only, no tags, no remote, reflogs expired, unreachable objects pruned.",
+        "controls": "A check before the arm is accepted: HEAD equals base_sha; the fix commit and every pull-request commit are absent; no exported file contains the fix SHA, a PR commit SHA (full or 12-character prefix) or the PR number as #NNNN. A failure stops the benchmark.",
+        "ref": "bench/value/corpus/materialize.py --manifest bench/value/corpus/manifest-v2.json",
+        "sources": [
+          "bench/value/corpus/materialize.py",
+          "bench/value/arms/olivium_v2.py (build_truncated_repo, assert_no_post_base)",
+          "bench/value/PROTOCOL-v2.md (Generator input)"
+        ]
+      },
+      {
+        "n": 3,
+        "title": "Three setups",
+        "long_title": "Three setups (arms)",
+        "what_happens": "none: the repository at the base commit, no instruction file. generic: the same plus a CLAUDE.md written by Claude Code's own /init at that commit, through the meter (cost $0.4557 for 8 tasks, reported separately as setup). olivium: the same plus the unmodified output of `bin/harnessforge generate PATH --runtime claude_code --export DIR --json`: CLAUDE.md, .claude/settings.json, the hook scripts under .claude/hooks/ and .olivium/*. The generator parses repository files and git history, runs nothing from the repository and calls no model (setup $0).",
+        "controls": "Every setup starts from the same snapshot. entry.sh first removes any CLAUDE.md, AGENTS.md, copilot-instructions.md, .claude or .cursor shipped with the repository, at any depth. Before the agent starts it records the SHA-256 of every harness file and of the --settings file; the runner compares them with the arm's files and scores the trial infra_error on any mismatch.",
+        "ref": "bin/harnessforge generate PATH --runtime claude_code --export DIR --json",
+        "sources": [
+          "bench/value/PROTOCOL-v2.md (Arms",
+          "change log 'implementation')",
+          "bench/value/arms/entry.sh",
+          "bench/value/arms/generic.py",
+          "bench/value/arms/olivium_v2.py"
+        ]
+      },
+      {
+        "n": 4,
+        "title": "One container per run",
+        "long_title": "Agent container",
+        "what_happens": "Each run is one headless Claude Code 2.1.311 session (`claude -p --output-format stream-json`) with model claude-sonnet-5-5 in its own Docker container, created from a per-task image, files copied in with docker cp, no host mounts. Limits: 60 main-session turns, 1200 s (20 minutes), $3 per run; container limits 1500m memory, 2 CPUs, 512 processes. The container is on an internal Docker network whose only peer is the meter; it holds a dummy API key. The prompt is the issue title and body followed by 'Fix this issue in the repository in the current directory.'",
+        "controls": "Same image, prompt, model, limits and UV_NO_SYNC=1 in every setup. WebSearch and WebFetch are removed in every setup and in /init (--disallowedTools), because a search runs on the API side, past the container's isolation, and could find the upstream fix. Permission modes differ on purpose: none and generic run with bypassPermissions and one shared benchmark settings file; olivium runs its exported settings byte for byte (--settings) in default mode with no bypass, so a call its own rules refuse counts against it.",
+        "ref": "claude -p --output-format stream-json (the Olivium setup adds --settings with its exported file)",
+        "sources": [
+          "bench/value/lib/session.py",
+          "bench/value/docker/agent-run.sh",
+          "bench/value/docker/net.sh",
+          "bench/value/lib/common.py (MODEL, MAX_TURNS, TIMEOUT_S, AGENT_LIMITS, PROMPT_SUFFIX)",
+          "bench/value/run.py (arm_run_config)",
+          "bench/value/arms/benchmark-settings.json",
+          "bench/value/PROTOCOL-v2.md (How each arm runs",
+          "change log 'web tools removed')"
+        ]
+      },
+      {
+        "n": 5,
+        "title": "Metering proxy",
+        "long_title": "Metering proxy",
+        "what_happens": "The meter is a reverse proxy to the Anthropic Messages API. It alone holds the API key, injects it when forwarding, attributes each request to its run id (/run/<run_id>/...), reads token usage from the API responses and prices it from a price table (claude-sonnet-5-5: $2 input, $10 output, $2.50 5-minute cache write, $0.10 cache read per million tokens). It enforces a per-run cap and a total cap and appends every request to requests.jsonl. The default mode is a mock model that contacts no API.",
+        "controls": "Fail-closed: an unknown model, an unwritable log or a 200 response without readable usage stops forwarding. With --refuse-web-tools it refuses any request that offers a web search or fetch server tool. The log never holds headers, bodies or the key. In the first run the meter's cost equalled Claude Code's own total_cost_usd on every trial (0 mismatches above one millionth); 501 meter rows, all live, none offering a web or server tool.",
+        "ref": "bench/value/meter/meter.py --refuse-web-tools",
+        "sources": [
+          "bench/value/meter/meter.py",
+          "bench/value/meter/prices.json",
+          "bench/value/lib/meterctl.py",
+          "docs/benchmarks/value-v2-2026-11-09/supplement.json (full_run.integrity, full_run.meter)"
+        ]
+      },
+      {
+        "n": 6,
+        "title": "Hidden tests",
+        "long_title": "Grading with hidden tests",
+        "what_happens": "The agent's patch is extracted (excluding CLAUDE.md, .claude/ and .olivium/) and applied to a clean checkout at the base commit in a fresh container started with --network none. Every test file, test configuration, lint configuration and CI file the agent touched is then restored or removed, the real test patch from the pull request is applied, and lint and the tests run. Solved means every fail-to-pass test passes and no pass-to-pass test regresses; the repository's linter result is recorded separately.",
+        "controls": "The agent never sees the real test patch. Restoring test files and configuration means an agent cannot pass by weakening the tests; root-level modules that could shadow the test runner are also restored. A run that hits a limit is scored unsolved and its cost counts. Stated gap: forgery through ordinary source files in the package under test is not detected.",
+        "ref": "bench/value/grade/grade.sh (container started with --network none)",
+        "sources": [
+          "bench/value/grade/grade.sh",
+          "bench/value/grade/grader.py",
+          "bench/value/PROTOCOL.md (Metrics",
+          "change log 'Grading also restores test configuration', 'Grading also removes test-runner shadows')",
+          "bench/value/PROTOCOL-v2.md (Environment and run procedure)"
+        ]
+      },
+      {
+        "n": 7,
+        "title": "Paired by task",
+        "long_title": "Analysis",
+        "what_happens": "Three questions: fewer tokens and lower cost; better context (files read outside the real fix, turns and tool calls before the first edit to a file the real fix changed); more accurate (solved, regressions, lint). For each task the 3 repeats of each setup are averaged. The difference is olivium minus the other setup for that task. The headline is the median of those differences across tasks, with a 95% percentile bootstrap interval: tasks resampled with replacement 10,000 times, seed 20261108. Cost per solved task is the setup's total cost divided by its solved runs and has no interval.",
+        "controls": "An interval that includes zero is reported as no clear difference. Held-out tasks are also reported separately. Every report section carries the line: '8 tasks, one model, one agent. This can show a direction or a problem. It cannot prove a general effect.' Numbers reach other documents only from results.json.",
+        "ref": "bench/value/analyze.py (seed 20261108, 10,000 resamples)",
+        "sources": [
+          "bench/value/analyze.py (SEED, RESAMPLES, bootstrap_interval)",
+          "bench/value/PROTOCOL-v2.md (Metrics and analysis)",
+          "docs/benchmarks/value-v2-2026-11-09/report.md (Method)"
+        ]
+      },
+      {
+        "n": 8,
+        "title": "Whatever it shows",
+        "long_title": "What is published",
+        "what_happens": "Under docs/benchmarks: report.md, results.json, charts, per-trial summaries (trace, grade, state, harness check, meter rows), the meter log, the schedule and provenance.json with commands, digests, spend and checksums.",
+        "controls": "No third-party source, issue text, test patches, agent patches or transcripts are published; refused commands in the first run are cut to their leading program words and paths. Mock output is stamped REHEARSAL and stays in the scratch directory.",
+        "ref": "docs/benchmarks/value-v2-2026-11-09/ and docs/benchmarks/value-v2-2026-11-10-fix/",
+        "sources": [
+          "docs/benchmarks/value-v2-2026-11-09/provenance.json (excluded_from_this_directory)",
+          "docs/benchmarks/value-v2-2026-11-10-fix/provenance.json",
+          "bench/value/PROTOCOL-v2.md (Publication)"
+        ]
+      }
+    ],
+    "before_the_steps": {
+      "title": "Pre-registration",
+      "what_happens": "The design (setups, task rule, limits, metrics, analysis, stop rules) was written in PROTOCOL-v2.md on 2026-11-09, after the pilot and before held-out task selection, rehearsal or any scored run of this version; the 5 pilot tasks were carried over unchanged. Every later change is a dated change-log entry with its reason, and the file's SHA-256 at each state is appended to PROTOCOL-v2.sha256 (6 states). The first scored run used state 90bbbacc... (2026-11-10T09:56:42Z); the after-fix re-run was written into the change log at state 376b8a64... (2026-11-10T12:01:33Z) before it ran (run window 12:11 to 12:31 UTC).",
+      "controls": "Nothing in the first scored run was chosen from its outcome data. The after-fix re-run was decided after that outcome and logged before it ran. The result is published whatever it is. If a benchmark bug is found after scored runs begin, all scored runs are discarded and repeated; runs are never re-done selectively.",
+      "ref": "bench/value/PROTOCOL-v2.md, bench/value/PROTOCOL-v2.sha256"
+    },
+    "schedule": {
+      "title": "Schedule and repeats",
+      "what_happens": "8 tasks x 3 setups x 3 repeats = 72 scored runs. The order is shuffled with seed 20261108 so time of day and prompt-cache warmth are spread across setups. Two runs go at a time. Before the scored run, a paid canary (one task, three setups, one repeat) runs in its own directory and is never scored.",
+      "controls": "A run that ends as infra_error (API outage, Docker failure, harness-check mismatch, a web tool offered) is left out of the scores and repeated, up to 3 attempts; a run that fails because of the model or the harness is never repeated. In the first run: 72 scheduled, 72 completed, 0 retries, 0 timeouts, 0 turn limits, 0 budget_exhausted, 0 infra errors.",
+      "ref": "bench/value/run.py prepare|run --protocol 2"
+    }
+  },
+  "limits": {
+    "source": "Texts from the facts sheet block limits; each item names its own published source",
+    "items": [
+      {
+        "text": "8 tasks, one model (claude-sonnet-5-5), one agent (Claude Code 2.1.311). This can show a direction or a problem. It cannot prove a general effect.",
+        "source": "docs/benchmarks/value-v2-2026-11-09/report.md (repeated note); results.json pilot_note"
+      },
+      {
+        "text": "The after-fix run uses the same tasks the fix was found on, so it is not a held-out result.",
+        "source": "docs/benchmarks/value-v2-2026-11-10-fix/report.md 'Read this with care'"
+      },
+      {
+        "text": "After-fix comparison uses setups from two runs a few hours apart: none and /init are the first run's runs, not re-run.",
+        "source": "docs/benchmarks/value-v2-2026-11-10-fix/report.md; docs/benchmarks/value-v2-2026-11-10-fix/provenance.json arms"
+      },
+      {
+        "text": "Accuracy could not move in either direction on this task set: each task was solved by all its runs or by none (5 always, 3 never), in every setup.",
+        "source": "docs/benchmarks/value-v2-2026-11-10-fix/report.md bullet Accuracy; per-task Solved tables"
+      },
+      {
+        "text": "The analyzer and rule filters were tuned while looking at pallets/click, pallets/flask, python-attrs/attrs and expressjs/express at the same base commits; the 5 pilot tasks come from those repositories. Only the held-out table is free of that overlap.",
+        "source": "docs/benchmarks/value-v2-2026-11-09/report.md 'Read this first: overlap with the tuning repositories'"
+      },
+      {
+        "text": "All 3 held-out tasks come from one repository, pallets/werkzeug, which shares an owner and likely layout and tooling conventions with tuned repositories. The held-out table is free of the base-commit overlap but not of that family resemblance. The rule aimed for 5 held-out tasks and found 3.",
+        "source": "docs/benchmarks/value-v2-2026-11-09/report.md; bench/value/PROTOCOL-v2.md change log 'held-out selection outcome'"
+      },
+      {
+        "text": "Bug fixes only, two languages (7 Python tasks, 1 JavaScript); held-out tasks are Python only. Extra repositories had to fit one generic uv install recipe, a limit of the benchmark's install machinery.",
+        "source": "bench/value/PROTOCOL-v2.md 'What this cannot show', 'Tasks'; manifest-v2.json"
+      },
+      {
+        "text": "The baselines run with permission checks bypassed and the harness runs with its own permissions in default mode. That is the pre-registered design (the harness is measured as exported), so refusals count against the harness only.",
+        "source": "bench/value/PROTOCOL-v2.md 'How each arm runs'"
+      },
+      {
+        "text": "'Files read outside the real fix' is a lower bound: reads through grep, rg, find or interpreters are not counted.",
+        "source": "bench/value/PROTOCOL.md change log 'Trace limitation, stated plainly'"
+      },
+      {
+        "text": "The pilot (2026-11-09, 5 tasks, 45 runs) measured an older harness with exported settings not used and web tools offered. Its numbers are a different run with a different harness and do not form a before/after comparison.",
+        "source": "docs/benchmarks/value-v2-2026-11-09/report.md 'Before and after'; docs/benchmarks/value-2026-11-09/report.md"
+      },
+      {
+        "text": "The generated permissions are a filter, not a sandbox: an allowed interpreter or runner can do anything the user can. Run unattended sessions in a container or VM.",
+        "source": "docs/claude-code-connector.md 'Generator settings (v1alpha2)' layer 3; 'What an allowed program can do'"
+      },
+      {
+        "text": "The harness was already changed once before the first run. A paid canary on click #3858 found 5 refused calls; the generator's allow list was widened and the guard hook added before any scored run. The canary is not scored.",
+        "source": "bench/value/PROTOCOL-v2.md change log '2026-11-10, first paid canary'; docs/benchmarks/value-v2-2026-11-09/provenance.json canaries"
+      },
+      {
+        "text": "The portal recording and screenshots in evidence/ show generator output only; they measure nothing about agent cost, context or accuracy, and were recorded before the refusal fix.",
+        "source": "docs/benchmarks/value-v2-2026-11-09/evidence/index.json what, limits, recorded_utc"
+      }
+    ]
+  },
+  "spend": {
+    "source": "docs/benchmarks/value-v2-2026-11-10-fix/provenance.json spend_usd; docs/benchmarks/value-v2-2026-11-09/provenance.json spend_usd",
+    "programme_total_usd": 10.49,
+    "programme_total_text": "$10.49",
+    "approved_usd": 60,
+    "approved_text": "$60",
+    "parts": [
+      {
+        "what": "Pilot programme before v2 (2026-11-09, 5 tasks)",
+        "usd": 3.4818
+      },
+      {
+        "what": "First v2 canary (not scored)",
+        "usd": 0.3979005
+      },
+      {
+        "what": "Second v2 canary (not scored)",
+        "usd": 0.4172819
+      },
+      {
+        "what": "/init for the Claude Code /init setup, 8 tasks",
+        "usd": 0.4557194
+      },
+      {
+        "what": "First scored run, 72 runs",
+        "usd": 4.333584
+      },
+      {
+        "what": "After-fix re-run, 24 Olivium runs",
+        "usd": 1.4019119
+      },
+      {
+        "what": "$0 replay of 150 calls (mock model)",
+        "usd": 0
+      }
+    ],
+    "setup_cost": {
+      "none_text": "$0",
+      "generic_text": "$0.4557",
+      "generic_note": "/init on 8 tasks, reported separately from the per-run costs",
+      "olivium_text": "$0",
+      "olivium_note": "the generator calls no model"
+    }
+  },
+  "meta": {
+    "source": "docs/benchmarks/value-v2-2026-11-09/provenance.json; docs/benchmarks/value-v2-2026-11-10-fix/provenance.json; bench/value/PROTOCOL-v2.md; bench/value/PROTOCOL-v2.sha256; bench/value/corpus/manifest-v2.json",
+    "model": "claude-sonnet-5-5",
+    "agent": "Claude Code",
+    "claude_code_version": "2.1.311",
+    "environment": "Docker, one container per run",
+    "tasks": 8,
+    "pilot_tasks": 5,
+    "held_out_tasks": 3,
+    "setups": 3,
+    "repeats": 3,
+    "scored_runs_first": 72,
+    "runs_rerun": 24,
+    "repositories": [
+      "pallets/click",
+      "pallets/flask",
+      "python-attrs/attrs",
+      "expressjs/express",
+      "pallets/werkzeug"
+    ],
+    "held_out_repository": "pallets/werkzeug",
+    "limits_per_run": {
+      "turns": 60,
+      "seconds": 1200,
+      "cap_usd": 3
+    },
+    "seed": 20261108,
+    "bootstrap_resamples": 10000,
+    "concurrency": 2,
+    "statistic": "median of per-task differences (Olivium minus baseline; 3 repeats averaged per task), 95% percentile bootstrap interval over tasks",
+    "dates": {
+      "protocol_written_utc": "2026-11-09T19:44:28Z",
+      "manifest_frozen_utc": "2026-11-09T21:31:48Z",
+      "first_run_window_utc": [
+        "2026-11-10T10:07:30Z",
+        "2026-11-10T10:54:07Z"
+      ],
+      "rerun_logged_in_protocol_utc": "2026-11-10T12:01:33Z",
+      "rerun_window_utc": [
+        "2026-11-10T12:11:13Z",
+        "2026-11-10T12:31:56Z"
+      ],
+      "pilot_date": "2026-11-09",
+      "run_date": "2026-11-10"
+    },
+    "protocol": {
+      "file": "bench/value/PROTOCOL-v2.md",
+      "sha256_first_run": "90bbbacc9ce55995355457c7c8e70a17ac743a8ce886282a4d454b59ec1e6c44",
+      "sha256_before_rerun": "376b8a64d4f27708779564af85d1588cbc1a6e2063b1fc97b252e50363592719",
+      "sha256_on_disk_equals_before_rerun": true,
+      "recorded_states": [
+        {
+          "sha256": "0f22681f9122f13a3f201c16fedf4c69c582b7e8906da4b289932cdb6fde025f",
+          "utc": "2026-11-09T19:44:28Z"
+        },
+        {
+          "sha256": "619051467fefa71ac2a54f3bb3df1589a9a707f9709d265bb85b54d5a3643c2f",
+          "utc": "2026-11-09T22:00:00Z"
+        },
+        {
+          "sha256": "4502fb5298ccfeb9fa4b68b6cbd4420bb4b2d1aeb3fc41ccd1f66dd44cd1c6fb",
+          "utc": "2026-11-09T22:51:29Z"
+        },
+        {
+          "sha256": "be0650d3f20b9af6ce64ed8b22bc293864ea0810b934844afd5094c566b1d4d6",
+          "utc": "2026-11-10T09:36:11Z"
+        },
+        {
+          "sha256": "90bbbacc9ce55995355457c7c8e70a17ac743a8ce886282a4d454b59ec1e6c44",
+          "utc": "2026-11-10T09:56:42Z"
+        },
+        {
+          "sha256": "376b8a64d4f27708779564af85d1588cbc1a6e2063b1fc97b252e50363592719",
+          "utc": "2026-11-10T12:01:33Z"
+        }
+      ]
+    },
+    "manifest": {
+      "file": "bench/value/corpus/manifest-v2.json",
+      "checksum": "c8bde114ef966b873cc0a13cb15e153474e5e96c3643f3ec9f3034e6104061d3",
+      "file_sha256": "ca63f474f6c63c3597b5a157585471b708c1942f17d7e929a7cb4a9ede0b01a8"
+    },
+    "published": [
+      "docs/benchmarks/value-v2-2026-11-09/report.md",
+      "docs/benchmarks/value-v2-2026-11-09/results.json",
+      "docs/benchmarks/value-v2-2026-11-09/supplement.json",
+      "docs/benchmarks/value-v2-2026-11-09/provenance.json",
+      "docs/benchmarks/value-v2-2026-11-09/evidence/",
+      "docs/benchmarks/value-v2-2026-11-10-fix/report.md",
+      "docs/benchmarks/value-v2-2026-11-10-fix/results.json",
+      "docs/benchmarks/value-v2-2026-11-10-fix/replay.json",
+      "docs/benchmarks/value-v2-2026-11-10-fix/provenance.json",
+      "bench/value/PROTOCOL-v2.md"
+    ],
+    "setups_labels": {
+      "none": "No instruction file",
+      "generic": "Claude Code /init",
+      "olivium_first": "Olivium, first run",
+      "olivium_after_fix": "Olivium, after fix"
+    },
+    "colours": {
+      "none": "grey",
+      "generic": "grey",
+      "olivium_first": "purple",
+      "olivium_after_fix": "green"
+    }
+  },
+  "media": {
+    "source": "Recorded for this site on 2026-11-10; the originals are not under docs/benchmarks/. Generator digests compared with docs/benchmarks/value-v2-2026-11-10-fix/provenance.json (application_snapshot).",
+    "recorded_utc": "2026-11-10T15:57Z to 2026-11-10T15:58Z",
+    "generator": {
+      "lib_sha256": "ec84759cd181f771cd65e11acd36a4b8e485c4ebbdaff25f91f647ffb2ffc7fb",
+      "priv_blueprints_sha256": "82e96fc7b4f3f6d50dd066ff91660272867a9290a882659c936f28ab39d244ed",
+      "matches": "application_snapshot in docs/benchmarks/value-v2-2026-11-10-fix/provenance.json (both digests equal)",
+      "computed_with": "bench/value/arms/olivium_v2.py generator_snapshot_digests, before the recording"
+    },
+    "caveat": "Recorded 2026-11-10 15:57 to 15:58 UTC with the generator used for the after-fix re-run (lib digest ec84759c, the value in that run's provenance.json). The checkout was copied to a neutral shared folder for the recording. Generator output only: it measures nothing about agent cost, context or accuracy.",
+    "theme_note": "The portal renders its own dark theme. The paths on screen are in a neutral shared folder the checkout was copied to for the recording.",
+    "export": {
+      "task": "pallets-werkzeug-3298",
+      "files": 10,
+      "digest": "768a6c96a92690a9def869756f46933539f4be0cd04b3b04a57ae33da074763d",
+      "settings_json_bytes": 4350,
+      "settings_json_sha256": "b99d078fe391df23a72ed851e86089f6165e80141ecb308429494d9676e13ddf",
+      "guard_bytes": 34884,
+      "claude_md_bytes": 541,
+      "read_from": "the directory the recording exported, read on disk; the file list and sizes on the page equal the files on disk, and the preview equals the exported CLAUDE.md"
+    },
+    "video": {
+      "file": "assets/bench/portal-werkzeug-3298-after-fix.webm",
+      "bytes": 740649,
+      "width": 1280,
+      "height": 800,
+      "alt": "Screen recording of the portal generating a harness for pallets/werkzeug at commit 25663ddc.",
+      "caption": "Portal walkthrough on pallets/werkzeug at 25663ddc (held-out task pallets-werkzeug-3298), 33.2 s, no sound: sign in, open Generate from repo, type the checkout path, Generate, pipeline done, tiles, command chips, meters and four notices, CLAUDE.md preview, the 10-file list, export to a fresh directory. Recorded 2026-11-10 15:57 to 15:58 UTC with the generator used for the after-fix re-run (lib digest ec84759c, the value in that run's provenance.json). The .claude/settings.json it lists is 4,350 B and the export holds 10 files. The checkout was copied to a neutral shared folder for the recording. Generator output only: it measures nothing about agent cost, context or accuracy.",
+      "origin": "recorded for this site; no copy under docs/benchmarks/",
+      "duration_seconds": 33.2,
+      "codec": "VP9, 25 fps, no audio track",
+      "re_encoded": "from the 4,806,773 B browser recording with libvpx-vp9 CRF 36; same 1280x800, 25 fps, 829 frames; SSIM 0.996 against the recording; container metadata stripped",
+      "mp4_fallback": {
+        "file": "assets/bench/portal-werkzeug-3298-after-fix.mp4",
+        "bytes": 1249824,
+        "codec": "H.264 (libx264 CRF 24, yuv420p, faststart), no audio track"
+      },
+      "poster": {
+        "file": "assets/bench/portal-werkzeug-3298-after-fix-poster.jpg",
+        "bytes": 101360,
+        "width": 1280,
+        "height": 800,
+        "alt": "Portal Generate page in the Ready state for pallets/werkzeug: Detect, Analyze and Generate checked, 7 commands found, 2 conventions measured, 1 pair of files that change together.",
+        "taken_at_seconds": 11.0
+      },
+      "descriptions_track": {
+        "file": "assets/bench/portal-werkzeug-3298-after-fix.vtt",
+        "kind": "descriptions",
+        "srclang": "en",
+        "label": "What the recording shows",
+        "bytes": 1742
+      },
+      "chapters": [
+        {
+          "start": 0,
+          "end": 2.9,
+          "text": "Sign-in page. The access code is typed into a masked field."
+        },
+        {
+          "start": 2.9,
+          "end": 6.1,
+          "text": "Portal home. \"Generate from repo\" is opened from the sidebar."
+        },
+        {
+          "start": 6.1,
+          "end": 7.2,
+          "text": "Empty Generate page: a path field and four idle pipeline nodes (Detect, Analyze, Generate, Export)."
+        },
+        {
+          "start": 7.2,
+          "end": 9.1,
+          "text": "The path of a local werkzeug checkout at commit 25663ddc is typed in, a copy made for the recording."
+        },
+        {
+          "start": 9.1,
+          "end": 9.9,
+          "text": "Generate is clicked. Status reads Working."
+        },
+        {
+          "start": 9.9,
+          "end": 12.4,
+          "text": "Status reads Ready. Detect, Analyze and Generate are checked. Tiles: 7 commands found, 2 conventions measured, 1 pair of files that change together. Seven command chips, six meters and four warning notices."
+        },
+        {
+          "start": 12.4,
+          "end": 16.3,
+          "text": "The page scrolls down: tiles, command chips, meters, the four notices, and the top of the CLAUDE.md preview and file list."
+        },
+        {
+          "start": 16.3,
+          "end": 19.8,
+          "text": "The CLAUDE.md preview beside the list of 10 generated files with sizes."
+        },
+        {
+          "start": 19.8,
+          "end": 27.0,
+          "text": "The CLAUDE.md preview is scrolled to its end: Commands, Layout, Conventions, Change together, Do and Don't. The file list shows the three hook scripts and .claude/settings.json (4350 B)."
+        },
+        {
+          "start": 27.0,
+          "end": 28.8,
+          "text": "An export directory path is typed and Export is clicked."
+        },
+        {
+          "start": 28.8,
+          "end": 33.2,
+          "text": "Export confirmation with the path of the fresh export directory."
+        }
+      ]
+    },
+    "images": [
+      {
+        "file": "assets/bench/werkzeug-3298-ready.png",
+        "bytes": 106207,
+        "width": 1280,
+        "height": 800,
+        "alt": "Portal Generate page, status Ready, for pallets/werkzeug: three of four pipeline nodes checked, tiles reading 7 commands, 2 conventions, 1 files that change together, seven command chips, six meters, four warning notices.",
+        "caption": "Portal after Generate on pallets/werkzeug at 25663ddc (held-out task pallets-werkzeug-3298): 7 commands, 2 conventions, 1 pair of files that change together, and the four notices the portal shows about what the export does not enforce. Recorded 2026-11-10 15:57 to 15:58 UTC with the generator used for the after-fix re-run (lib digest ec84759c, the value in that run's provenance.json). The checkout was copied to a neutral shared folder for the recording. Generator output only: it measures nothing about agent cost, context or accuracy.",
+        "origin": "recorded for this site; no copy under docs/benchmarks/",
+        "task": "pallets-werkzeug-3298",
+        "held_out": true,
+        "edited": "lossless PNG re-save, same pixels"
+      },
+      {
+        "file": "assets/bench/werkzeug-3298-files.png",
+        "bytes": 141212,
+        "width": 1280,
+        "height": 800,
+        "alt": "Portal showing the generated CLAUDE.md preview for werkzeug beside a list of 10 generated files with sizes, and an export path field.",
+        "caption": "CLAUDE.md preview and the 10 generated files for pallets/werkzeug at 25663ddc. The .claude/settings.json listed here is 4,350 B and the guard 34,884 B. Recorded 2026-11-10 15:57 to 15:58 UTC with the generator used for the after-fix re-run (lib digest ec84759c, the value in that run's provenance.json). The checkout was copied to a neutral shared folder for the recording. Generator output only: it measures nothing about agent cost, context or accuracy.",
+        "origin": "recorded for this site; no copy under docs/benchmarks/",
+        "task": "pallets-werkzeug-3298",
+        "held_out": true,
+        "edited": "lossless PNG re-save, same pixels"
+      },
+      {
+        "file": "assets/bench/werkzeug-3298-claude-md.png",
+        "bytes": 83432,
+        "width": 1280,
+        "height": 563,
+        "alt": "The whole generated CLAUDE.md for werkzeug: Commands (7), Layout, Conventions, Change together, Do and Don't, beside the file list.",
+        "caption": "The whole generated CLAUDE.md for pallets/werkzeug at 25663ddc, 541 B, beside the file list. The preview height limit was lifted for this capture only. Recorded 2026-11-10 15:57 to 15:58 UTC with the generator used for the after-fix re-run (lib digest ec84759c, the value in that run's provenance.json). Generator output only: it measures nothing about agent cost, context or accuracy.",
+        "origin": "recorded for this site; no copy under docs/benchmarks/",
+        "task": "pallets-werkzeug-3298",
+        "held_out": true,
+        "edited": "lossless PNG re-save, same pixels"
+      },
+      {
+        "file": "assets/bench/click-3858-claude-md.png",
+        "bytes": 78009,
+        "width": 1280,
+        "height": 502,
+        "alt": "The whole generated CLAUDE.md for click: Commands (7), Layout, Conventions, Do and Don't, beside the file list.",
+        "caption": "The whole generated CLAUDE.md for pallets/click at 7944461a (pilot task pallets-click-3858), 486 B, beside the file list. The analyzer was tuned while looking at pallets/click, so this is not a held-out example. Recorded 2026-11-10 15:57 to 15:58 UTC with the generator used for the after-fix re-run (lib digest ec84759c, the value in that run's provenance.json). Generator output only: it measures nothing about agent cost, context or accuracy.",
+        "origin": "recorded for this site; no copy under docs/benchmarks/",
+        "task": "pallets-click-3858",
+        "held_out": false,
+        "edited": "lossless PNG re-save, same pixels"
+      }
+    ]
+  }
+}

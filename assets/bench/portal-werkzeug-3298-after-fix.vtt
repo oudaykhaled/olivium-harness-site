@@ -1,0 +1,36 @@
+WEBVTT
+
+NOTE Text description of a silent screen recording. Recorded 2026-11-10 15:57 to 15:58 UTC with the generator used for the after-fix re-run (lib digest ec84759c). The checkout was copied to a neutral folder for the recording.
+
+00:00:00.000 --> 00:00:02.900
+Sign-in page. The access code is typed into a masked field.
+
+00:00:02.900 --> 00:00:06.100
+Portal home. "Generate from repo" is opened from the sidebar.
+
+00:00:06.100 --> 00:00:07.200
+Empty Generate page: a path field and four idle pipeline nodes (Detect, Analyze, Generate, Export).
+
+00:00:07.200 --> 00:00:09.100
+The path of a local werkzeug checkout at commit 25663ddc is typed in, a copy made for the recording.
+
+00:00:09.100 --> 00:00:09.900
+Generate is clicked. Status reads Working.
+
+00:00:09.900 --> 00:00:12.400
+Status reads Ready. Detect, Analyze and Generate are checked. Tiles: 7 commands found, 2 conventions measured, 1 pair of files that change together. Seven command chips, six meters and four warning notices.
+
+00:00:12.400 --> 00:00:16.300
+The page scrolls down: tiles, command chips, meters, the four notices, and the top of the CLAUDE.md preview and file list.
+
+00:00:16.300 --> 00:00:19.800
+The CLAUDE.md preview beside the list of 10 generated files with sizes.
+
+00:00:19.800 --> 00:00:27.000
+The CLAUDE.md preview is scrolled to its end: Commands, Layout, Conventions, Change together, Do and Don't. The file list shows the three hook scripts and .claude/settings.json (4350 B).
+
+00:00:27.000 --> 00:00:28.800
+An export directory path is typed and Export is clicked.
+
+00:00:28.800 --> 00:00:33.200
+Export confirmation with the path of the fresh export directory.

@@ -9,15 +9,15 @@
   const guidance = '# Team engineering guidance\n\nKeep each change focused.\nExplain the reason for it.\nInclude checks for changed behavior.';
   const targets = {'Codex CLI': 'AGENTS.md', 'Claude Code': 'CLAUDE.md', 'OpenCode': 'AGENTS.md'};
   const stages = [
-    `<p class="panel-kicker">INPUT / SELECTED EVIDENCE</p><h3 class="panel-title">LOAD THE CONTEXT.</h3><p class="panel-intro">Start with the knowledge your team wants the agent to use.</p>
+    `<p class="panel-kicker">INPUT / SELECTED EVIDENCE</p><h3 class="panel-title">SELECT THE SOURCES.</h3><p class="panel-intro">Choose the documents the guidance will be drawn from.</p>
      <div class="context-files"><div class="context-file"><span class="file-type">MD</span><div><b>engineering-principles.md</b><small>Small changes. Clear intent. Useful checks.</small></div><span class="file-check" aria-hidden="true">✓</span></div><div class="context-file"><span class="file-type">MD</span><div><b>review-notes.md</b><small>What makes a change easier to review.</small></div><span class="file-check" aria-hidden="true">✓</span></div></div>
      <div class="goal-line"><span>GOAL</span><p>Make changes easier to review.</p></div>`,
-    `<p class="panel-kicker">SYNTHESIS / GROUNDED RECOMMENDATION</p><h3 class="panel-title">MAKE KNOWLEDGE ACTIONABLE.</h3><p class="panel-intro">Connect selected evidence to the goal. Keep the source visible.</p>
+    `<p class="panel-kicker">SYNTHESIS / GROUNDED RECOMMENDATION</p><h3 class="panel-title">DRAFT A RECOMMENDATION.</h3><p class="panel-intro">The recommendation ties the selected sources to the goal and cites them.</p>
      <blockquote class="guidance-block">Keep changes focused, explain the reason for each change, and include checks for changed behavior.</blockquote>
      <div class="citation-list"><span>↳ engineering-principles.md</span><span>↳ review-notes.md</span></div><p class="panel-note">These example documents value small changes and clear review context. The recommendation connects those practices to the team’s goal.</p>`,
-    `<p class="panel-kicker">CONTROL / HUMAN DECISION</p><h3 class="panel-title">YOU HAVE THE FINAL SAY.</h3><p class="panel-intro">Inspect. Edit. Reject. Resolve conflicts. Approve what belongs.</p>
+    `<p class="panel-kicker">CONTROL / HUMAN DECISION</p><h3 class="panel-title">REVIEW AND APPROVE.</h3><p class="panel-intro">Inspect, edit or reject each recommendation, resolve conflicts, then approve.</p>
      <div class="review-check"><span aria-hidden="true">[✓]</span> Supporting evidence inspected</div><div class="review-check"><span aria-hidden="true">[✓]</span> Exact guidance revision approved</div><div class="review-check"><span aria-hidden="true">[✓]</span> Package plan separately approved</div><div class="approval-stamp"><span aria-hidden="true">◆</span><div><b>APPROVED BY YOUR TEAM</b><small>Illustrative review / revision 01</small></div></div>`,
-    `<p class="panel-kicker">OUTPUT / AGENT-NATIVE GUIDANCE</p><h3 class="panel-title">EXPORT YOUR WAY OF WORKING.</h3><div class="target-tabs" role="group" aria-label="Example export target">${Object.keys(targets).map(t => `<button type="button" data-target="${t}" aria-pressed="${t === currentTarget}">${t}</button>`).join('')}</div><div class="export-code"><div class="export-code-head"><span id="export-filename">AGENTS.md</span><button type="button" class="copy-button" id="copy-guidance" aria-label="Copy example guidance">COPY ↗</button></div><pre id="guidance-text">${guidance}</pre></div><p class="panel-note">Simplified instruction excerpt. Full native packages carry approved guidance and provenance; their structure depends on the target.</p>`
+    `<p class="panel-kicker">OUTPUT / AGENT-NATIVE GUIDANCE</p><h3 class="panel-title">EXPORT THE GUIDANCE.</h3><div class="target-tabs" role="group" aria-label="Example export target">${Object.keys(targets).map(t => `<button type="button" data-target="${t}" aria-pressed="${t === currentTarget}">${t}</button>`).join('')}</div><div class="export-code"><div class="export-code-head"><span id="export-filename">AGENTS.md</span><button type="button" class="copy-button" id="copy-guidance" aria-label="Copy example guidance">COPY ↗</button></div><pre id="guidance-text">${guidance}</pre></div><p class="panel-note">Simplified instruction excerpt. Full native packages carry approved guidance and provenance; their structure depends on the target.</p>`
   ];
 
   function renderStage(index) {
@@ -83,15 +83,14 @@
   const replayButton = document.querySelector('#replay-terminal');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const transcript = [
-    {kind:'command', prefix:'$ ', text:'cat team-context/*.md'},
-    {kind:'muted', prefix:'[read] ', text:'principles.md + review-notes.md'},
-    {kind:'command', prefix:'$ ', text:'cat goals/review-quality.md'},
-    {kind:'output', prefix:'  → ', text:'make changes easier to review'},
-    {kind:'success', prefix:'[review] ', text:'guidance + package plan approved'},
-    {kind:'command', prefix:'$ ', text:'cat exports/AGENTS.md'},
-    {kind:'success', prefix:'[ready] ', text:'focused changes. clear intent. checks.'}
+    {kind:'command', prefix:'$ ', text:'bin/harnessforge analyze /path/to/repo'},
+    {kind:'muted', prefix:'[read] ', text:'files and git history, no model call'},
+    {kind:'command', prefix:'$ ', text:'bin/harnessforge generate /path/to/repo \\'},
+    {kind:'command', prefix:'\u00a0\u00a0\u00a0\u00a0', text:'--runtime claude_code --export /path/to/new-directory'},
+    {kind:'success', prefix:'[written] ', text:'CLAUDE.md  .claude/settings.json'},
+    {kind:'success', prefix:'[written] ', text:'.claude/hooks/  .olivium/'}
   ];
-  terminal.setAttribute('aria-label','Illustrative Linux shell session: selected team documents and a goal become human-approved guidance in AGENTS.md. No commands are executed.');
+  terminal.setAttribute('aria-label','Illustrative shell session: bin/harnessforge analyze reads a repository without a model call, then bin/harnessforge generate with the claude_code runtime writes CLAUDE.md, .claude/settings.json, .claude/hooks and .olivium to a new directory. No commands are executed.');
   let paused = reducedMotion.matches;
   let timer = null;
   let row = 0;
@@ -174,4 +173,41 @@
     observer.observe(terminal);
   }
   applyMotion();
+})();
+
+// Benchmark chart: the toggle only highlights a run. Every bar, value and verdict stays visible.
+(() => {
+  const chart = document.querySelector('#bench-chart');
+  const toggle = document.querySelector('#bench-toggle');
+  if (!chart || !toggle) return;
+  const buttons = [...toggle.querySelectorAll('button[data-run]')];
+
+  function selectRun(run) {
+    if (chart.dataset.run === run) delete chart.dataset.run; else chart.dataset.run = run;
+    buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.run === chart.dataset.run)));
+  }
+
+  buttons.forEach((button, index) => {
+    button.addEventListener('click', () => selectRun(button.dataset.run));
+    button.addEventListener('keydown', event => {
+      if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const last = buttons.length - 1;
+      const target = event.key === 'Home' ? 0 : event.key === 'End' ? last : (index + (event.key === 'ArrowRight' ? 1 : last)) % buttons.length;
+      buttons[target].focus();
+    });
+  });
+  toggle.hidden = false;
+
+  // Bars grow once when the chart scrolls into view, unless motion is reduced.
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    chart.classList.add('bench-armed');
+    const observer = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      chart.classList.add('bench-in');
+      observer.disconnect();
+    }, {threshold: .25});
+    observer.observe(chart);
+    window.addEventListener('beforeprint', () => chart.classList.add('bench-in'));
+  }
 })();
